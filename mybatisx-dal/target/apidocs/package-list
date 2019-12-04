@@ -1,0 +1,8 @@
+org.mayanjun.mybatisx.dal
+org.mayanjun.mybatisx.dal.converter
+org.mayanjun.mybatisx.dal.dao
+org.mayanjun.mybatisx.dal.generator
+org.mayanjun.mybatisx.dal.handler
+org.mayanjun.mybatisx.dal.parser
+org.mayanjun.mybatisx.dal.sharding
+org.mayanjun.mybatisx.dal.util
