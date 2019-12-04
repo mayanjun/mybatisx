@@ -8,12 +8,15 @@
     <artifactId>mybatisx</artifactId>
     <!--VERSION-UPGRADE-->
     <version>1.0-SNAPSHOT</version>
+
+    <packaging>pom</packaging>
+
     <modules>
         <module>mybatisx-api</module>
         <module>mybatisx-dal</module>
         <module>mybatisx-starter</module>
     </modules>
-    <packaging>pom</packaging>
+
 
     <name>mybatisx</name>
     <description>mybatisx library</description>
