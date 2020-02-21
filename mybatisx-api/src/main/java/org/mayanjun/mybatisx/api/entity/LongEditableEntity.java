@@ -43,6 +43,13 @@ public class LongEditableEntity extends LongEntity implements EditableEntity<Lon
     @Column(type = DataType.VARCHAR, length = "32", comment = "Last editor")
     private String editor;
 
+    public LongEditableEntity() {
+    }
+
+    public LongEditableEntity(Long id) {
+        super(id);
+    }
+
     @Override
     public Date getCreatedTime() {
         return createdTime;

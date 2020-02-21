@@ -32,8 +32,11 @@ public class LongDeletableEntity extends LongEntity implements DeletableEntity<L
     @Column(type = DataType.BIT, length = "1", comment = "是否被删除")
     private Boolean deleted;
 
-
     public LongDeletableEntity() {
+    }
+
+    public LongDeletableEntity(Long id) {
+        super(id);
     }
 
     @Override
