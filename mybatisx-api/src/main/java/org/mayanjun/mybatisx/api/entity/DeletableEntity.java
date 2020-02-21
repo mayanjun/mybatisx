@@ -16,24 +16,18 @@
 
 package org.mayanjun.mybatisx.api.entity;
 
-import org.mayanjun.mybatisx.api.annotation.Column;
-import org.mayanjun.mybatisx.api.enums.DataType;
 import java.io.Serializable;
 
 /**
  * Define deleted field. All subclass of this can query use {@link org.mayanjun.mybatisx.api.enums.QueryDeletedMode}
  * @param <P>
  */
-public abstract class DeletableEntity<P extends Serializable> implements Entity<P> {
+public interface DeletableEntity<P extends Serializable> extends Entity<P> {
 
-    @Column(type = DataType.BIT, length = "1", comment = "是否被删除")
-    private Boolean deleted;
+    //@Column(type = DataType.BIT, length = "1", comment = "是否被删除")
+    //private Boolean deleted;
 
-    public Boolean getDeleted() {
-        return deleted;
-    }
+    Boolean getDeleted();
 
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
+    void setDeleted(Boolean deleted);
 }

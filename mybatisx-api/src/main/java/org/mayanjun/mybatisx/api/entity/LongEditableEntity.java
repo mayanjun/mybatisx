@@ -20,6 +20,8 @@ import org.mayanjun.mybatisx.api.annotation.Column;
 import org.mayanjun.mybatisx.api.annotation.PrimaryKey;
 import org.mayanjun.mybatisx.api.enums.DataType;
 
+import java.util.Date;
+
 /**
  * Represents a entity bean that can be serialized to database.
  * The type of id field is set to Long
@@ -27,11 +29,23 @@ import org.mayanjun.mybatisx.api.enums.DataType;
  * @author mayanjun
  * @since 0.0.1
  */
-public class LongEditableEntity extends EditableEntity<Long> {
+public class LongEditableEntity implements EditableEntity<Long> {
 
     @Column(type = DataType.BIGINT, comment = "ID", unsigned = true)
     @PrimaryKey
     private Long id;
+
+    @Column(type = DataType.DATETIME, comment = "Created Time")
+    private Date createdTime;
+
+    @Column(type = DataType.DATETIME, comment = "Last Modified Time")
+    private Date modifiedTime;
+
+    @Column(type = DataType.VARCHAR, length = "32", comment = "Creator")
+    private String creator;
+
+    @Column(type = DataType.VARCHAR, length = "32", comment = "Last editor")
+    private String editor;
 
     public LongEditableEntity() {
     }
@@ -49,5 +63,45 @@ public class LongEditableEntity extends EditableEntity<Long> {
     @Override
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    @Override
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    @Override
+    public Date getModifiedTime() {
+        return modifiedTime;
+    }
+
+    @Override
+    public void setModifiedTime(Date modifiedTime) {
+        this.modifiedTime = modifiedTime;
+    }
+
+    @Override
+    public String getCreator() {
+        return creator;
+    }
+
+    @Override
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    @Override
+    public String getEditor() {
+        return editor;
+    }
+
+    @Override
+    public void setEditor(String editor) {
+        this.editor = editor;
     }
 }

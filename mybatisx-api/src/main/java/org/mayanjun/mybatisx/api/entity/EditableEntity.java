@@ -26,7 +26,9 @@ import java.util.Date;
  * Represent a editable entity
  * @param <P>
  */
-public abstract class EditableEntity<P extends Serializable> implements Entity<P>  {
+public interface EditableEntity<P extends Serializable> extends Entity<P>  {
+
+    /*
 
     @Column(type = DataType.DATETIME, comment = "Created Time")
     private Date createdTime;
@@ -40,35 +42,21 @@ public abstract class EditableEntity<P extends Serializable> implements Entity<P
     @Column(type = DataType.VARCHAR, length = "32", comment = "Last editor")
     private String editor;
 
-    public Date getCreatedTime() {
-        return createdTime;
-    }
+    */
 
-    public void setCreatedTime(Date createdTime) {
-        this.createdTime = createdTime;
-    }
+    Date getCreatedTime();
 
-    public Date getModifiedTime() {
-        return modifiedTime;
-    }
+    void setCreatedTime(Date createdTime);
 
-    public void setModifiedTime(Date modifiedTime) {
-        this.modifiedTime = modifiedTime;
-    }
+    Date getModifiedTime();
 
-    public String getCreator() {
-        return creator;
-    }
+    void setModifiedTime(Date modifiedTime);
 
-    public void setCreator(String creator) {
-        this.creator = creator;
-    }
+    String getCreator();
 
-    public String getEditor() {
-        return editor;
-    }
+    void setCreator(String creator);
 
-    public void setEditor(String editor) {
-        this.editor = editor;
-    }
+    String getEditor();
+
+    void setEditor(String editor);
 }

@@ -27,11 +27,15 @@ import org.mayanjun.mybatisx.api.enums.DataType;
  * @author mayanjun
  * @since 0.0.1
  */
-public class LongDeletableEntity extends DeletableEntity<Long> {
+public class LongDeletableEntity implements DeletableEntity<Long> {
 
     @Column(type = DataType.BIGINT, comment = "ID", unsigned = true)
     @PrimaryKey
     private Long id;
+
+    @Column(type = DataType.BIT, length = "1", comment = "是否被删除")
+    private Boolean deleted;
+
 
     public LongDeletableEntity() {
     }
@@ -49,5 +53,15 @@ public class LongDeletableEntity extends DeletableEntity<Long> {
     @Override
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    @Override
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 }
