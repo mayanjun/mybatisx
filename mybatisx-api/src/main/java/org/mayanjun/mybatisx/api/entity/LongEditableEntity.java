@@ -29,11 +29,7 @@ import java.util.Date;
  * @author mayanjun
  * @since 0.0.1
  */
-public class LongEditableEntity implements EditableEntity<Long> {
-
-    @Column(type = DataType.BIGINT, comment = "ID", unsigned = true)
-    @PrimaryKey
-    private Long id;
+public class LongEditableEntity extends LongEntity implements EditableEntity<Long> {
 
     @Column(type = DataType.DATETIME, comment = "Created Time")
     private Date createdTime;
@@ -46,24 +42,6 @@ public class LongEditableEntity implements EditableEntity<Long> {
 
     @Column(type = DataType.VARCHAR, length = "32", comment = "Last editor")
     private String editor;
-
-    public LongEditableEntity() {
-    }
-
-    public LongEditableEntity(Long id) {
-        this();
-        this.id = id;
-    }
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     @Override
     public Date getCreatedTime() {
