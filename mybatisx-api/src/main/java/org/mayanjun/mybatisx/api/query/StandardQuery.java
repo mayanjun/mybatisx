@@ -18,11 +18,9 @@ package org.mayanjun.mybatisx.api.query;
 
 import org.mayanjun.mybatisx.api.entity.Entity;
 import org.mayanjun.mybatisx.api.enums.QueryDeletedMode;
+import sun.misc.SoftCache;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Represents a query
@@ -34,7 +32,7 @@ public class StandardQuery<T extends Entity> implements Query<T> {
 	private static final long serialVersionUID = -656396755847643907L;
 	private List<SqlComparator> comparators;
 	private int[] limits;
-	private Set<Sort> sorts = new LinkedHashSet<Sort>();
+	private Map<String, Sort> sorts = new HashMap<String, Sort>();
 	private Class<T> beanType;
 	private List<String> excludeFields;
 	private List<String> includeFields;
@@ -149,13 +147,13 @@ public class StandardQuery<T extends Entity> implements Query<T> {
 
 	@Override
 	public Query<T> addSort(Sort sort) {
-		if (sort != null) sorts.add(sort);
+		if (sort != null) sorts.put(sort.getName(), sort);
 		return this;
 	}
 
 	@Override
 	public Set<Sort> sorts() {
-		return sorts;
+		return Collections.unmodifiableSet(new HashSet<Sort>(sorts.values()));
 	}
 
 }
