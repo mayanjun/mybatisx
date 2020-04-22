@@ -18,7 +18,9 @@ package org.mayanjun.mybatisx.dal.dao;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.ognl.MemberAccess;
 import org.apache.ibatis.ognl.Ognl;
+import org.apache.ibatis.ognl.OgnlContext;
 import org.apache.ibatis.type.JdbcType;
 import org.mayanjun.mybatisx.api.enums.DataType;
 import org.mayanjun.mybatisx.dal.Sharding;
@@ -44,6 +46,8 @@ import static org.mayanjun.mybatisx.dal.generator.AnnotationHelper.*;
 public class DynamicSqlBuilder {
 
     private static final Logger LOG = LoggerFactory.getLogger(DynamicSqlBuilder.class);
+
+    private static final MemberAccess OGNL_MEMBER_ACCESS = new DefaultOgnlMemberAccess();
 
     public String buildQuery(@Param(DynamicMapper.PARAM_NAME)final SQLParameter parameter, Sharding sharding) throws Exception {
         if(sharding != null) {
@@ -218,7 +222,8 @@ public class DynamicSqlBuilder {
             }
             Object value = null;
             try {
-                value = Ognl.getValue(ognl, bean);
+                OgnlContext context = new OgnlContext(null, null, OGNL_MEMBER_ACCESS);
+                value = Ognl.getValue(ognl, context, bean);
             } catch (Exception e) {}
 
             if(value != null) {
@@ -267,7 +272,8 @@ public class DynamicSqlBuilder {
 
             Object value = null;
             try {
-                value = Ognl.getValue(ognl, bean);
+                OgnlContext context = new OgnlContext(null, null, OGNL_MEMBER_ACCESS);
+                value = Ognl.getValue(ognl, context, bean);
             } catch (Exception e) {}
             if(value != null) {
                 fillValueMap(values, ah, valuesMap, paramName, ognl);
@@ -302,7 +308,8 @@ public class DynamicSqlBuilder {
 
         Object value = null;
         try {
-            value = Ognl.getValue(ognl, bean);
+            OgnlContext context = new OgnlContext(null, null, OGNL_MEMBER_ACCESS);
+            value = Ognl.getValue(ognl, context, bean);
         } catch (Exception e) {}
 
         if(value == null) {
