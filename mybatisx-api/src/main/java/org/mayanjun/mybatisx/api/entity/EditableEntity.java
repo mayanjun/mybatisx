@@ -16,9 +16,6 @@
 
 package org.mayanjun.mybatisx.api.entity;
 
-import org.mayanjun.mybatisx.api.annotation.Column;
-import org.mayanjun.mybatisx.api.enums.DataType;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -28,21 +25,6 @@ import java.util.Date;
  */
 public interface EditableEntity<P extends Serializable> extends Entity<P>  {
 
-    /*
-
-    @Column(type = DataType.DATETIME, comment = "Created Time")
-    private Date createdTime;
-
-    @Column(type = DataType.DATETIME, comment = "Last Modified Time")
-    private Date modifiedTime;
-
-    @Column(type = DataType.VARCHAR, length = "32", comment = "Creator")
-    private String creator;
-
-    @Column(type = DataType.VARCHAR, length = "32", comment = "Last editor")
-    private String editor;
-
-    */
 
     Date getCreatedTime();
 
