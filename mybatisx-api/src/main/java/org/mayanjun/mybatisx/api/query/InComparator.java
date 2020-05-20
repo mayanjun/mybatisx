@@ -63,14 +63,6 @@ public class InComparator extends SingleComparator {
 		if(value == null) throw new IllegalArgumentException("value can not be null");
 		if(!value.getClass().isArray()
 				&& !(value instanceof Collection)) throw new IllegalArgumentException("value must be array or Collection");
-
-		int len = 0;
-		if(value.getClass().isArray()) {
-			len = Array.getLength(value);
-		}else {
-			len = ((Collection<?>) value).size();
-		}
-		if(len == 0) throw new IllegalArgumentException("collection can not be empty");
 	}
 
 	@Override

@@ -313,13 +313,19 @@ public abstract class BaseParser implements QueryParser {
     }
 
     public Object renderCollection(SQLParameter parameter, Collection list, String charset, DataType dataType) {
-        int count = 0;
-        int len = list.size();
         String ret = "";
-        for(Object value : list) {
-            ret += renderValue(parameter, value, charset, dataType);
-            if(count < len - 1) ret += ",";
-            count++;
+        if (list == null || list.size() == 0) {
+            ret += renderValue(parameter, list, charset, dataType);
+        } else {
+            Object[] objects = list.toArray();
+            int length = objects.length;
+            for (int i = 0; i < length; i++) {
+                Object value = objects[i];
+                if (i != 0) {
+                    ret += ",";
+                }
+                ret += renderValue(parameter, value, charset, dataType);
+            }
         }
         return ret;
     }
