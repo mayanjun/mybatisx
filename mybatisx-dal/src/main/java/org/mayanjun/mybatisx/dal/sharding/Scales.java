@@ -19,6 +19,7 @@ package org.mayanjun.mybatisx.dal.sharding;
 import org.mayanjun.mybatisx.dal.IdGenerator;
 import org.mayanjun.mybatisx.dal.generator.SnowflakeIDGenerator;
 import org.springframework.util.Assert;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;

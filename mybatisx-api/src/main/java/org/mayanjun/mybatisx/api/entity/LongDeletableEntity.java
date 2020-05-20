@@ -17,7 +17,6 @@
 package org.mayanjun.mybatisx.api.entity;
 
 import org.mayanjun.mybatisx.api.annotation.Column;
-import org.mayanjun.mybatisx.api.annotation.PrimaryKey;
 import org.mayanjun.mybatisx.api.enums.DataType;
 
 /**

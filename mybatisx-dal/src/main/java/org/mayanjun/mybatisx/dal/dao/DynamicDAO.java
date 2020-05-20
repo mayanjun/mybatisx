@@ -16,7 +16,10 @@
 
 package org.mayanjun.mybatisx.dal.dao;
 
-import javassist.*;
+import javassist.ClassClassPath;
+import javassist.ClassPath;
+import javassist.ClassPool;
+import javassist.CtClass;
 import javassist.bytecode.AnnotationsAttribute;
 import javassist.bytecode.ClassFile;
 import javassist.bytecode.ConstPool;

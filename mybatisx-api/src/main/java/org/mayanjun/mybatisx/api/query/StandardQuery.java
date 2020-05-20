@@ -18,7 +18,6 @@ package org.mayanjun.mybatisx.api.query;
 
 import org.mayanjun.mybatisx.api.entity.Entity;
 import org.mayanjun.mybatisx.api.enums.QueryDeletedMode;
-import sun.misc.SoftCache;
 
 import java.util.*;
 

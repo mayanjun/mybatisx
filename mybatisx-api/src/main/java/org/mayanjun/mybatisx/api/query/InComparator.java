@@ -16,7 +16,6 @@
 
 package org.mayanjun.mybatisx.api.query;
 
-import java.lang.reflect.Array;
 import java.util.Collection;
 
 /**
