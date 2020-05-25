@@ -16,12 +16,13 @@
 
 package org.mayanjun.mybatisx.dal.dao;
 
-import org.apache.ibatis.binding.BindingException;
 import org.apache.ibatis.session.SqlSession;
 import org.mayanjun.mybatisx.dal.IdGenerator;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.sql.DataSource;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Database session
@@ -46,9 +47,11 @@ public class DatabaseSession {
     private DataSource dataSource;
 
     private IdGenerator idGenerator;
+    private static final Map<Class, Object> MAPPER_CACHE = new ConcurrentHashMap<Class, Object>();
 
     /**
      * Test if a Mapper class is registered
+     *
      * @param type mybatis mapper type
      * @return
      */
@@ -58,24 +61,32 @@ public class DatabaseSession {
 
     /**
      * Return a registered mapper
+     *
      * @param type mapper class
-     * @param <T> mapper type
+     * @param <T>  mapper type
      * @return Mapper object
      */
     public <T> T getMapper(Class<T> type) {
-        if (!sqlSession.getConfiguration().hasMapper(type)) {
-            try {
-                sqlSession.getConfiguration().addMapper(type);
-            } catch (BindingException e) {
-                // nothing to do
+        Object mapper = MAPPER_CACHE.get(type);
+        if (mapper == null) {
+            synchronized (type) {
+                mapper = MAPPER_CACHE.get(type);
+                if (mapper == null) {
+                    if (!hasMapper(type)) {
+                        sqlSession.getConfiguration().addMapper(type);
+                        mapper = sqlSession.getMapper(type);
+                        MAPPER_CACHE.put(type, mapper);
+                    }
+                }
             }
         }
-        return sqlSession.getMapper(type);
+        return (T) mapper;
     }
 
     /**
      * Construct an instance of DatabaseSession
-     * @param name database session name
+     *
+     * @param name       database session name
      * @param sqlSession mybatis sql session
      */
     public DatabaseSession(String name, SqlSession sqlSession) {
@@ -84,8 +95,9 @@ public class DatabaseSession {
 
     /**
      * Construct an instance of DatabaseSession
-     * @param name database session name
-     * @param sqlSession mybatis sql session
+     *
+     * @param name        database session name
+     * @param sqlSession  mybatis sql session
      * @param transaction transaction
      */
     public DatabaseSession(String name, SqlSession sqlSession, TransactionTemplate transaction) {
