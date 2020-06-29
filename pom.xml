@@ -7,7 +7,7 @@
     <groupId>org.mayanjun</groupId>
     <artifactId>mybatisx</artifactId>
     <!--VERSION-UPGRADE-->
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 
     <packaging>pom</packaging>
 
@@ -16,7 +16,6 @@
         <module>mybatisx-dal</module>
         <module>mybatisx-starter</module>
     </modules>
-
 
     <name>mybatisx</name>
     <description>mybatisx library</description>
@@ -35,6 +34,10 @@
             <url>mayanjun.org</url>
             <email>mayanjun396@163.com</email>
         </developer>
+
+        <developer>
+            <name>gongshunqiang</name>
+        </developer>
     </developers>
 
     <scm>
@@ -46,7 +49,7 @@
     <properties>
         <mayanjun.core.version>0.0.1</mayanjun.core.version>
         <!--VERSION-UPGRADE-->
-        <mybatisx.version>1.0.1</mybatisx.version>
+        <mybatisx.version>1.0.2</mybatisx.version>
 
         <spring.version>5.1.10.RELEASE</spring.version>
         <slf4j.version>1.7.25</slf4j.version>
