@@ -4,3 +4,6 @@ A very easy-to-use database middleware. Please see homepage of [mybatisx](http:/
 
 ## 1.0
 - init version
+
+## 1.0.2
+- fix some bugs
