@@ -16,24 +16,43 @@
 
 package org.mayanjun.mybatisx.starter;
 
+import org.mayanjun.mybatisx.dal.IdGenerator;
+
 /**
  * Datasource configuration
  */
 public class DataSourceConfig {
-    private String idGeneratorType;
+
+    private Class<? extends IdGenerator> idGeneratorType;
+
+    private int [] snowflakeIndexes;
+
     private String name = "master";
+
     private String driverClassName = "com.mysql.jdbc.Driver";
+
     private String jdbcUrl = "jdbc:mysql://127.0.0.1:3306/myjack";
+
     private String username = "root";
+
     private String password = "123456";
+
     private boolean autoCommit = true;
+
     private String validationQuery = "select 1 from dual";
+
     private int minimumIdle = 0;
+
     private int maximumPoolSize = 50;
+
     private String mybatisConfigLocation = "classpath:default-mybatis-config.xml";
+
     private String isolationLevelName = "ISOLATION_READ_COMMITTED";
+
     private int transactionTimeout = 3000;
+
     private String propagationBehaviorName = "PROPAGATION_REQUIRED";
+
     private String connectionProperties = "createDatabaseIfNotExist=true;characterEncoding=utf-8;useUnicode=true;allowMultiQueries=true;zeroDateTimeBehavior=convertToNull";
 
     public int getTransactionTimeout() {
@@ -148,11 +167,19 @@ public class DataSourceConfig {
         this.propagationBehaviorName = propagationBehaviorName;
     }
 
-    public String getIdGeneratorType() {
+    public Class<? extends IdGenerator> getIdGeneratorType() {
         return idGeneratorType;
     }
 
-    public void setIdGeneratorType(String idGeneratorType) {
+    public void setIdGeneratorType(Class<? extends IdGenerator> idGeneratorType) {
         this.idGeneratorType = idGeneratorType;
+    }
+
+    public int[] getSnowflakeIndexes() {
+        return snowflakeIndexes;
+    }
+
+    public void setSnowflakeIndexes(int[] snowflakeIndexes) {
+        this.snowflakeIndexes = snowflakeIndexes;
     }
 }

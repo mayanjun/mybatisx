@@ -70,16 +70,18 @@ public class BasicDaoFactoryBean implements FactoryBean<BasicDAO>, ApplicationRu
      */
     private IdGenerator newIdGenerator(DataSourceConfig dataSourceConfig) {
         IdGenerator generator = null;
-        String type = dataSourceConfig.getIdGeneratorType();
 
-        if (StringUtils.isNotBlank(type)) {
+        Class<? extends IdGenerator> type = dataSourceConfig.getIdGeneratorType();
+
+        if (type != null) {
             try {
                 synchronized (this) {
-                    Class<? extends IdGenerator> cls = (Class<? extends IdGenerator>) Class.forName(type);
-                    generator = reusableIdGenerators.get(cls);
+                    /*Class<? extends IdGenerator> cls = (Class<? extends IdGenerator>) Class.forName(type);*/
+
+                    generator = reusableIdGenerators.get(type);
                     if (generator == null) {
-                        generator = cls.newInstance();
-                        reusableIdGenerators.put(cls, generator);
+                        generator = type.newInstance();
+                        reusableIdGenerators.put(type, generator);
                     }
                 }
             } catch (Exception e) {
@@ -90,7 +92,8 @@ public class BasicDaoFactoryBean implements FactoryBean<BasicDAO>, ApplicationRu
         if (generator == null) {
             if (defaultIdGenerator == null) {
                 synchronized (this) {
-                    defaultIdGenerator = new SnowflakeIDGenerator();
+                    int indexes[] = dataSourceConfig.getSnowflakeIndexes();
+                    defaultIdGenerator = new SnowflakeIDGenerator(indexes);
                 }
             }
             generator = defaultIdGenerator;
