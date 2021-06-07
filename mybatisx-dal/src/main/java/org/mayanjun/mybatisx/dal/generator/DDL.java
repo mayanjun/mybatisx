@@ -54,6 +54,13 @@ public class DDL {
 	private static MetadataReaderFactory READER_FACTORY = new CachingMetadataReaderFactory(RESOLVER);
 
 
+	public interface ClassConsumer {
+
+		void accept(Class<?> cls);
+
+	}
+
+
 	public static List<Resource> parseResources(String... packageName) throws Exception {
 		List<Resource> list = new ArrayList<Resource>();
 		for(String pkg : packageName) {
@@ -62,6 +69,36 @@ public class DDL {
 			list.addAll(Arrays.asList(resources));
 		}
 		return list;
+	}
+
+
+	public static boolean isEntity(Class<?> cls) {
+		if (cls != null) {
+			Table table = cls.getAnnotation(Table.class);
+			return (table != null) && Entity.class.isAssignableFrom(cls);
+		}
+
+		return false;
+	}
+
+	public static void scanEntityClasses(ClassConsumer consumer, String... packageName) throws Exception {
+		try {
+			List<Resource> resources = parseResources(packageName);
+			for (Resource r : resources) {
+				MetadataReader reader = READER_FACTORY.getMetadataReader(r);
+				boolean matched = FILTER.match(reader, READER_FACTORY);
+				if (matched) {
+					String className = reader.getClassMetadata().getClassName();
+					Class<?> cls = Class.forName(className);
+
+					if (Entity.class.isAssignableFrom(cls)) {
+						consumer.accept(cls);
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Scan classes error", e);
+		}
 	}
 
 

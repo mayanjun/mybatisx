@@ -59,6 +59,7 @@ import org.springframework.util.Assert;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A default implementation of
@@ -70,7 +71,7 @@ public class DynamicDAO implements DataBaseRouteAccessor, ShardingEntityAccessor
     private static final Logger LOG = LoggerFactory.getLogger(DynamicDAO.class);
 
     private DatabaseRouter router;
-    private Map<Class<?>, Class<?>> entityMapperClassesCache = new IdentityHashMap<Class<?>, Class<?>>();
+    private Map<Class<?>, Class<?>> entityMapperClassesCache = new ConcurrentHashMap<Class<?>, Class<?>>();
 
     private QueryParser parser = new PreparedQueryParser(DynamicMapper.PARAM_NAME);
     private Sharding defaultSharding = new DefaultSharding();

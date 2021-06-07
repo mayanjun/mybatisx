@@ -20,12 +20,14 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mayanjun.core.Assert;
+import org.mayanjun.mybatisx.api.entity.Entity;
 import org.mayanjun.mybatisx.dal.IdGenerator;
 import org.mayanjun.mybatisx.dal.converter.PropertiesFactoryBean;
 import org.mayanjun.mybatisx.dal.dao.BasicDAO;
 import org.mayanjun.mybatisx.dal.dao.DatabaseRouter;
 import org.mayanjun.mybatisx.dal.dao.DatabaseSession;
 import org.mayanjun.mybatisx.dal.dao.ThreadLocalDatabaseRouter;
+import org.mayanjun.mybatisx.dal.generator.DDL;
 import org.mayanjun.mybatisx.dal.generator.SnowflakeIDGenerator;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -191,9 +193,24 @@ public class BasicDaoFactoryBean implements FactoryBean<BasicDAO>, ApplicationRu
     @Override
     public BasicDAO getObject() throws Exception {
         Assert.notNull(config, "config can not be null");
-        DatabaseRouter router = newDataBaseRouter(config);
-        BasicDAO dao = new BasicDAO();
+        final DatabaseRouter router = newDataBaseRouter(config);
+        final BasicDAO dao = new BasicDAO();
         dao.setRouter(router);
+
+        // 扫描实体资源，进行Mapper预生成：为了解决在系统初始化过程中并发访问的情况下Mapper生成失败的问题，
+        // 一般会在windows JVM下出现，这里可以在生成DAO前预先生成Mapper，避免在高并发下出现No Mapper问题
+        String [] entityPackages = config.getEntityPackages();
+        if (entityPackages != null && entityPackages.length > 0) {
+
+            DDL.scanEntityClasses(new DDL.ClassConsumer() {
+                @Override
+                public void accept(Class<?> cls) {
+                    LOG.info("Get mapper for class: {}", cls);
+                    dao.getMapper(cls, router.getDatabaseSession().sqlSession());
+                }
+            }, entityPackages);
+        }
+
         return dao;
     }
 

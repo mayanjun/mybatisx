@@ -26,11 +26,21 @@ public class MybatisxConfig {
 
     private List<DataSourceConfig> dataSources;
 
+    private String [] entityPackages;
+
     public List<DataSourceConfig> getDataSources() {
         return dataSources;
     }
 
     public void setDataSources(List<DataSourceConfig> dataSources) {
         this.dataSources = dataSources;
+    }
+
+    public String[] getEntityPackages() {
+        return entityPackages;
+    }
+
+    public void setEntityPackages(String[] entityPackages) {
+        this.entityPackages = entityPackages;
     }
 }
