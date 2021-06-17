@@ -205,7 +205,6 @@ public class BasicDaoFactoryBean implements FactoryBean<BasicDAO>, ApplicationRu
             DDL.scanEntityClasses(new DDL.ClassConsumer() {
                 @Override
                 public void accept(Class<?> cls) {
-                    LOG.info("Get mapper for class: {}", cls);
                     dao.getMapper(cls, router.getDatabaseSession().sqlSession());
                 }
             }, entityPackages);
