@@ -20,7 +20,6 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mayanjun.core.Assert;
-import org.mayanjun.mybatisx.api.entity.Entity;
 import org.mayanjun.mybatisx.dal.IdGenerator;
 import org.mayanjun.mybatisx.dal.converter.PropertiesFactoryBean;
 import org.mayanjun.mybatisx.dal.dao.BasicDAO;
