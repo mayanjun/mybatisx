@@ -10,4 +10,7 @@ A very easy-to-use database middleware. Please see homepage of [mybatisx](http:/
 
 ## 1.0.3
 - Change the field type of idGeneratorType in DataSourceConfig to Class<? IdGenerator>
-- Add config field snowflakeIndexes to config the indexes of the default IdGenerator 
+- Add config field snowflakeIndexes to config the indexes of the default IdGenerator
+
+## 1.0.4
+- Added entity scan to ensure generate the entity Mapper.  
