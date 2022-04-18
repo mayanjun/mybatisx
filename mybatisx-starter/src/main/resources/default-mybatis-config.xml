@@ -19,4 +19,9 @@
         <setting name="logImpl" value="SLF4J"/>
         <setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString" />
     </settings>
+
+    <typeHandlers>
+        <typeHandler handler="org.mayanjun.mybatisx.dal.converter.StringArrayVarcharTypeHandler"/>
+        <typeHandler handler="org.mayanjun.mybatisx.dal.converter.ClassVarcharTypeHandler"/>
+    </typeHandlers>
 </configuration>

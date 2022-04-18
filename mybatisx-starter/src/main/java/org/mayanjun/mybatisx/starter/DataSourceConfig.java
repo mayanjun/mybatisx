@@ -53,7 +53,8 @@ public class DataSourceConfig {
 
     private String propagationBehaviorName = "PROPAGATION_REQUIRED";
 
-    private String connectionProperties = "createDatabaseIfNotExist=true;characterEncoding=utf-8;useUnicode=true;allowMultiQueries=true;zeroDateTimeBehavior=convertToNull";
+    private String connectionProperties = "createDatabaseIfNotExist=true;zeroDateTimeBehavior=convertToNull;characterEncoding=utf8;useUnicode=true;allowMultiQueries=true;useSSL=false;serverTimezone=GMT+8;autoReconnect=true;sessionVariables=sql_mode=''";
+
 
     public int getTransactionTimeout() {
         return transactionTimeout;
