@@ -16,8 +16,8 @@
 
 package org.mayanjun.mybatisx.dal.sharding;
 
-import org.mayanjun.core.Assert;
 import org.mayanjun.mybatisx.api.entity.Entity;
+import org.mayanjun.mybatisx.dal.Assert;
 import org.mayanjun.mybatisx.dal.Sharding;
 
 import java.io.Serializable;

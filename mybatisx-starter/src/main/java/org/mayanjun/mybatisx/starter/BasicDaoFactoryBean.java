@@ -19,7 +19,7 @@ package org.mayanjun.mybatisx.starter;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.mayanjun.core.Assert;
+import org.mayanjun.mybatisx.dal.Assert;
 import org.mayanjun.mybatisx.dal.IdGenerator;
 import org.mayanjun.mybatisx.dal.converter.PropertiesFactoryBean;
 import org.mayanjun.mybatisx.dal.dao.BasicDAO;
@@ -110,6 +110,8 @@ public class BasicDaoFactoryBean implements FactoryBean<BasicDAO>, ApplicationRu
             dataSourceConfigList.add(new DataSourceConfig());
             config.setDataSources(dataSourceConfigList);
         }
+
+
         Assert.notEmpty(config.getDataSources(), "Datasource config(s) can not be empty");
 
         ThreadLocalDatabaseRouter databaseRouter = new ThreadLocalDatabaseRouter();
