@@ -76,6 +76,32 @@ public class DynamicDAO implements DataBaseRouteAccessor, ShardingEntityAccessor
     private QueryParser parser = new PreparedQueryParser(DynamicMapper.PARAM_NAME);
     private Sharding defaultSharding = new DefaultSharding();
 
+    /**
+     * 执行主数据库事务
+     * @param action
+     * @param <T>
+     * @return
+     */
+    public <T> T executeTransaction(TransactionCallback<T> action) {
+        return databaseRouter().getDatabaseSession().transaction().execute(action);
+    }
+
+    /**
+     * 执行主数据库事务
+     * @param action
+     * @param <T>
+     * @return
+     */
+    public <T> T executeTransaction(String datasourceName, TransactionCallback<T> action) {
+        DatabaseSession session = databaseRouter().getDatabaseSession(datasourceName);
+        if (session != null) {
+            return session.transaction().execute(action);
+        } else {
+            LOG.warn("Can't execute database transaction: no database session found with name '{}'", datasourceName);
+        }
+        return null;
+    }
+
     @Override
     public void afterPropertiesSet() throws Exception {
         Assert.notNull(router, "router must be set");

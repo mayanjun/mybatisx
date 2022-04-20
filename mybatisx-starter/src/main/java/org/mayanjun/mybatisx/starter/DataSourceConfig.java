@@ -29,7 +29,7 @@ public class DataSourceConfig {
 
     private String name = "master";
 
-    private String driverClassName = "com.mysql.jdbc.Driver";
+    private String driverClassName = "com.mysql.cj.jdbc.Driver";
 
     private String jdbcUrl = "jdbc:mysql://127.0.0.1:3306/myjack";
 
