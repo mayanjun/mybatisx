@@ -204,7 +204,9 @@ public abstract class BaseParser implements QueryParser {
         if (sorts != null && !sorts.isEmpty()) {
             for (Sort sort : sorts) {
                 if(sort != null && !SqlUtils.isBlank(sort.getName())) {
-                    sb.append(SqlUtils.escapeSQLField(sort.getName(), false) + "");
+                    sb.append(
+                            "`" + SqlUtils.escapeSQLField(sort.getName(), false) + "`"
+                    );
                     if(sort.getDirection() != null) sb.append(" " + sort.getDirection().name());
                     sb.append(",");
                 }
