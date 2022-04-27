@@ -20,6 +20,8 @@ import org.mayanjun.mybatisx.api.entity.Entity;
 import org.mayanjun.mybatisx.api.enums.QueryDeletedMode;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -51,6 +53,16 @@ public class QueryBuilder<T extends Entity> {
 	 * @return
 	 */
 	public static <T extends Entity> QueryBuilder<T> custom(Class<T> beanType) {
+		return new QueryBuilder(beanType);
+	}
+
+	/**
+	 * Alias for {@linkplain #custom(Class)}
+	 * @param beanType entity class
+	 * @param <T> entity type
+	 * @return
+	 */
+	public static <T extends Entity> QueryBuilder<T> of(Class<T> beanType) {
 		return new QueryBuilder(beanType);
 	}
 
@@ -541,5 +553,25 @@ public class QueryBuilder<T extends Entity> {
 		Set<Sort> sorts = query.sorts();
 		if(sorts == null || sorts.isEmpty()) query.addSort(new Sort("id", SortDirection.DESC));
 		return this.query;
+	}
+
+	/**
+	 * Test the comparator collection is empty
+	 * @return
+	 */
+	public boolean isEmpty() {
+		return query.getComparators().isEmpty();
+	}
+
+	public int size() {
+		return query.getComparators().size();
+	}
+
+	/**
+	 * Return an unmodifiable list of comparators
+	 * @return
+	 */
+	public List<SqlComparator> comparators() {
+		return Collections.unmodifiableList(query.getComparators());
 	}
 }
