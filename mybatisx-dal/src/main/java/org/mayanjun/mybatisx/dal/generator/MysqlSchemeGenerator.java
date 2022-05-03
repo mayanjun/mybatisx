@@ -141,7 +141,7 @@ public class MysqlSchemeGenerator {
                 String idxDef = ",\r\n";
                 if (format) idxDef += "\t";
 
-                String idxColString = toString(idx.columns(), clazz);
+                String idxColString = toString(table, idx.columns(), clazz);
                 if (SqlUtils.isBlank(idxColString)) continue;
                 idxDef += (idx.type() == IndexType.NULL ? "" : idx.type().name() + " ") + "KEY " + AnnotationHelper.quoteField(name) + " " + "(" + idxColString + ")";
 
@@ -150,16 +150,19 @@ public class MysqlSchemeGenerator {
         }
     }
 
-    private String toString(IndexColumn[] ics, Class<?> beanType) {
+    private String toString(Table table, IndexColumn[] ics, Class<?> beanType) {
         String s = "";
         if (ics != null && ics.length > 0) {
+
+            int indexLimit = table.indexLengthLimit();
+
             for (int i = 0; i < ics.length; i++) {
                 String colName = AnnotationHelper.getColumnName(ics[i].value(), beanType);
                 s += AnnotationHelper.quoteField(colName);
 
 				int indexLen = ics[i].length();
                 if (indexLen > 0) {
-					if(indexLen > 32) indexLen = 32;
+					if(indexLen > indexLimit) indexLen = indexLimit;
 					s += "(" + indexLen + ")";
 				} else {
 					AnnotationHolder h = AnnotationHelper.getAnnotationHolder(ics[i].value(), beanType);

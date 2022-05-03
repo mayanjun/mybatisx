@@ -76,6 +76,12 @@ public @interface Table {
     String collate() default "utf8_bin";
 
     /**
+     * Specify the limit number of index length
+     * @return
+     */
+    int indexLengthLimit() default 32;
+
+    /**
      * Auto increment id
      * @return
      */
