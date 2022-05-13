@@ -16,10 +16,7 @@
 
 package org.mayanjun.mybatisx.api.annotation;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * Table used to annotate a class to mapping a class to a database table
@@ -27,6 +24,7 @@ import java.lang.annotation.Target;
  * @author mayanjun(8/19/15)
  * @since 0.0.1
  */
+@Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Table {
