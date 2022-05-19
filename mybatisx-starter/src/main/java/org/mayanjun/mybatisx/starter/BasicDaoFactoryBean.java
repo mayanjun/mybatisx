@@ -22,10 +22,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mayanjun.mybatisx.dal.Assert;
 import org.mayanjun.mybatisx.dal.IdGenerator;
 import org.mayanjun.mybatisx.dal.converter.PropertiesFactoryBean;
-import org.mayanjun.mybatisx.dal.dao.BasicDAO;
-import org.mayanjun.mybatisx.dal.dao.DatabaseRouter;
-import org.mayanjun.mybatisx.dal.dao.DatabaseSession;
-import org.mayanjun.mybatisx.dal.dao.ThreadLocalDatabaseRouter;
+import org.mayanjun.mybatisx.dal.dao.*;
 import org.mayanjun.mybatisx.dal.generator.DDL;
 import org.mayanjun.mybatisx.dal.generator.SnowflakeIDGenerator;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -60,8 +57,11 @@ public class BasicDaoFactoryBean implements FactoryBean<BasicDAO>, ApplicationRu
     private Map<Class<? extends IdGenerator>, IdGenerator> reusableIdGenerators = new HashMap<Class<? extends IdGenerator>, IdGenerator>();
     private volatile IdGenerator defaultIdGenerator;
 
-    public BasicDaoFactoryBean(@Autowired(required = false) MybatisxConfig config) {
+    private DataIsolationValueProvider provider;
+
+    public BasicDaoFactoryBean(@Autowired(required = false) MybatisxConfig config, DataIsolationValueProvider provider) {
         this.config = config;
+        this.provider = provider;
     }
 
     /**
@@ -195,7 +195,14 @@ public class BasicDaoFactoryBean implements FactoryBean<BasicDAO>, ApplicationRu
     public BasicDAO getObject() throws Exception {
         Assert.notNull(config, "config can not be null");
         final DatabaseRouter router = newDataBaseRouter(config);
-        final BasicDAO dao = new BasicDAO();
+
+        BasicDAO basicDAO = new BasicDAO();
+        if (config.isSupportDataIsolation()) {
+            Assert.notBlank(config.getDataIsolationField(), "The data isolation field must be specified if the supportDataIsolation is true");
+            basicDAO = new DataIsolationDAO(config.getDataIsolationField(), provider);
+        }
+
+        final BasicDAO dao = basicDAO;
         dao.setRouter(router);
 
         // 扫描实体资源，进行Mapper预生成：为了解决在系统初始化过程中并发访问的情况下Mapper生成失败的问题，

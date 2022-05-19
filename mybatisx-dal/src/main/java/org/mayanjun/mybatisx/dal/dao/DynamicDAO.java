@@ -448,6 +448,7 @@ public class DynamicDAO implements DataBaseRouteAccessor, ShardingEntityAccessor
     @Override
     public <T extends Entity> T getInclude(Entity bean, Sharding sharding, boolean forUpdate, String... includeFields) {
         Query<T> query = QueryBuilder.custom((Class<T>) bean.getClass()).andEquivalent("id", bean.getId()).includeFields(includeFields).limit(1).build();
+        query.setForUpdate(forUpdate);
         return queryOneInternal(bean, query, sharding);
     }
 

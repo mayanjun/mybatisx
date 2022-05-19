@@ -21,5 +21,5 @@ package org.mayanjun.mybatisx.dal.dao;
  *
  * @author mayanjun(6/30/16)
  */
-public final class BasicDAO extends DynamicDAO {
+public class BasicDAO extends DynamicDAO {
 }

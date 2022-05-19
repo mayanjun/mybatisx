@@ -25,8 +25,15 @@ import java.util.List;
 public class MybatisxConfig {
 
     private List<DataSourceConfig> dataSources;
-
     private String [] entityPackages;
+
+    /**
+     * 是否支持数据隔离，一般在多租户场景下可以从DAO层对数据进行租户隔离。
+     * 数据隔离需要指定一个隔离字段，DAO在进行CRUD时会自动添加该字段。
+     * 如果实体中不存在隔离字段，则自动忽略。
+     */
+    private boolean supportDataIsolation = false;
+    private String dataIsolationField;
 
     public List<DataSourceConfig> getDataSources() {
         return dataSources;
@@ -42,5 +49,21 @@ public class MybatisxConfig {
 
     public void setEntityPackages(String[] entityPackages) {
         this.entityPackages = entityPackages;
+    }
+
+    public boolean isSupportDataIsolation() {
+        return supportDataIsolation;
+    }
+
+    public void setSupportDataIsolation(boolean supportDataIsolation) {
+        this.supportDataIsolation = supportDataIsolation;
+    }
+
+    public String getDataIsolationField() {
+        return dataIsolationField;
+    }
+
+    public void setDataIsolationField(String dataIsolationField) {
+        this.dataIsolationField = dataIsolationField;
     }
 }

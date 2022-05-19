@@ -17,6 +17,8 @@
 package org.mayanjun.mybatisx.starter;
 
 import org.mayanjun.mybatisx.dal.dao.BasicDAO;
+import org.mayanjun.mybatisx.dal.dao.DataIsolationValueProvider;
+import org.mayanjun.mybatisx.dal.dao.DefaultDataIsolationValueProvider;
 import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,9 +44,15 @@ public class MybatisxAutoConfiguration implements ResourceLoaderAware {
     private ResourceLoader resourceLoader;
 
     @Bean
+    @ConditionalOnMissingBean(DataIsolationValueProvider.class)
+    public DataIsolationValueProvider dataIsolationValueProvider() {
+        return new DefaultDataIsolationValueProvider();
+    }
+
+    @Bean
     @ConditionalOnMissingBean(BasicDAO.class)
-    public BasicDAO dao() throws Exception {
-        BasicDaoFactoryBean factory = new BasicDaoFactoryBean(config);
+    public BasicDAO dao(DataIsolationValueProvider provider) throws Exception {
+        BasicDaoFactoryBean factory = new BasicDaoFactoryBean(config, provider);
         factory.setResourceLoader(resourceLoader);
         BasicDAO dao = factory.getObject();
         LOG.info("BasicDAO create successfully");
