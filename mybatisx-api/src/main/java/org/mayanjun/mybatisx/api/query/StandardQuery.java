@@ -35,6 +35,7 @@ public class StandardQuery<T extends Entity> implements Query<T> {
 	private Class<T> beanType;
 	private List<String> excludeFields;
 	private List<String> includeFields;
+	private boolean dataIsolationEnabled = true;
 
 	private boolean forUpdate;
 	private QueryDeletedMode queryDeletedMode;
@@ -153,6 +154,17 @@ public class StandardQuery<T extends Entity> implements Query<T> {
 	@Override
 	public Set<Sort> sorts() {
 		return Collections.unmodifiableSet(new HashSet<Sort>(sorts.values()));
+	}
+
+	@Override
+	public Query<T> setDataIsolationEnabled(boolean enabled) {
+		this.dataIsolationEnabled = true;
+		return this;
+	}
+
+	@Override
+	public boolean isDataIsolationEnabled() {
+		return dataIsolationEnabled;
 	}
 
 }

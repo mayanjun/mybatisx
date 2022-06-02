@@ -27,6 +27,8 @@ public class DataIsolationDAO extends BasicDAO {
     }
 
     private void isolate(Query<?> query) {
+        if (!query.isDataIsolationEnabled()) return;
+
         Object value = valueProvider.value();
         if (value == null) return;
 
@@ -36,7 +38,7 @@ public class DataIsolationDAO extends BasicDAO {
         }
     }
 
-    private void setIsolationValue(Entity entity) {
+    private void isolate(Entity entity) {
         if (entity == null) return;
         Object value = valueProvider.value();
         if (value == null) return;
@@ -77,19 +79,19 @@ public class DataIsolationDAO extends BasicDAO {
 
     @Override
     public int update(Entity bean, Sharding sharding) {
-        setIsolationValue(bean);
+        isolate(bean);
         return super.update(bean, sharding);
     }
 
     @Override
     public int save(Entity bean, Sharding sharding, boolean isAutoIncrementId) {
-        setIsolationValue(bean);
+        isolate(bean);
         return super.save(bean, sharding, isAutoIncrementId);
     }
 
     @Override
     public int saveOrUpdate(Entity bean, Sharding sharding, boolean isAutoIncrementId) {
-        setIsolationValue(bean);
+        isolate(bean);
         return super.saveOrUpdate(bean, sharding, isAutoIncrementId);
     }
 }

@@ -160,4 +160,12 @@ public interface Query<T extends Serializable> extends Serializable {
 	 * @return
 	 */
 	Set<Sort> sorts();
+
+	/**
+	 * 是否开启了数据隔离
+	 * @return
+	 */
+	boolean isDataIsolationEnabled();
+
+	Query<T> setDataIsolationEnabled(boolean enabled);
 }

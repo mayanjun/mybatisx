@@ -353,7 +353,7 @@ public class DynamicDAO implements DataBaseRouteAccessor, ShardingEntityAccessor
             bean.setId(b.getId());
             return update(bean, sharding);
         } else {
-            throw new IllegalArgumentException("Can not update bean for unique-query: bean=" + bean);
+            throw new IllegalArgumentException("Can not update bean for unique-query: bean=" + bean + ", id=" + bean.getId());
         }
     }
 

@@ -545,6 +545,16 @@ public class QueryBuilder<T extends Entity> {
         return this;
     }
 
+	public QueryBuilder<T> enableDataIsolation() {
+		this.query.setDataIsolationEnabled(true);
+		return this;
+	}
+
+	public QueryBuilder<T> disableDataIsolation() {
+		this.query.setDataIsolationEnabled(false);
+		return this;
+	}
+
 	/**
 	 * Build the final instance of Query
 	 * @return current instance of QueryBuilder
