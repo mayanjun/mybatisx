@@ -158,7 +158,7 @@ public class StandardQuery<T extends Entity> implements Query<T> {
 
 	@Override
 	public Query<T> setDataIsolationEnabled(boolean enabled) {
-		this.dataIsolationEnabled = true;
+		this.dataIsolationEnabled = enabled;
 		return this;
 	}
 
