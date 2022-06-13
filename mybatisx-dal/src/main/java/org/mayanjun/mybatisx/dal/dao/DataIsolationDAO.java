@@ -1,7 +1,9 @@
 package org.mayanjun.mybatisx.dal.dao;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.mayanjun.mybatisx.api.annotation.Table;
 import org.mayanjun.mybatisx.api.entity.Entity;
+import org.mayanjun.mybatisx.api.enums.DataIsolationPolicy;
 import org.mayanjun.mybatisx.api.query.EquivalentComparator;
 import org.mayanjun.mybatisx.api.query.Query;
 import org.mayanjun.mybatisx.dal.Assert;
@@ -29,17 +31,27 @@ public class DataIsolationDAO extends BasicDAO {
     private void isolate(Query<?> query) {
         if (!query.isDataIsolationEnabled()) return;
 
+        Table table = query.getBeanType().getAnnotation(Table.class);
+        if (table.dataIsolationPolicy() == DataIsolationPolicy.DISABLED) return;
+
         Object value = valueProvider.value();
         if (value == null) return;
 
         AnnotationHolder holder = AnnotationHelper.getAnnotationHolder(isolationField, query.getBeanType());
+
         if (holder != null) {
             query.addComparator(new EquivalentComparator(isolationField, value));
         }
     }
 
+
+
     private void isolate(Entity entity) {
         if (entity == null) return;
+
+        Table table = entity.getClass().getAnnotation(Table.class);
+        if (table.dataIsolationPolicy() == DataIsolationPolicy.DISABLED) return;
+
         Object value = valueProvider.value();
         if (value == null) return;
 

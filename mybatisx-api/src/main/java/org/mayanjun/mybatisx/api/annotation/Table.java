@@ -16,6 +16,8 @@
 
 package org.mayanjun.mybatisx.api.annotation;
 
+import org.mayanjun.mybatisx.api.enums.DataIsolationPolicy;
+
 import java.lang.annotation.*;
 
 /**
@@ -84,4 +86,7 @@ public @interface Table {
      * @return
      */
     boolean autoIncrement() default false;
+
+
+    DataIsolationPolicy dataIsolationPolicy() default DataIsolationPolicy.AUTO;
 }
