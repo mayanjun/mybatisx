@@ -47,7 +47,6 @@
     </scm>
 
     <properties>
-        <mayanjun.core.version>0.0.1</mayanjun.core.version>
         <!--VERSION-UPGRADE-->
         <mybatisx.version>1.0.5</mybatisx.version>
         <slf4j.version>1.7.25</slf4j.version>
