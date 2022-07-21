@@ -44,6 +44,7 @@ import org.mayanjun.mybatisx.api.query.QueryBuilder;
 import org.mayanjun.mybatisx.dal.IdGenerator;
 import org.mayanjun.mybatisx.dal.Sharding;
 import org.mayanjun.mybatisx.dal.ShardingEntityAccessor;
+import org.mayanjun.mybatisx.dal.generator.AnnotationHelper;
 import org.mayanjun.mybatisx.dal.parser.PreparedQueryParser;
 import org.mayanjun.mybatisx.dal.parser.QueryParser;
 import org.mayanjun.mybatisx.dal.parser.SQLParameter;
@@ -280,7 +281,8 @@ public class DynamicDAO implements DataBaseRouteAccessor, ShardingEntityAccessor
 
     @Override
     public int save(Entity bean, Sharding sharding) {
-        return save(bean, sharding, false);
+        Table table = bean.getClass().getAnnotation(Table.class);
+        return save(bean, sharding, table.autoIncrement() > -1);
     }
 
     @Override
