@@ -82,10 +82,10 @@ public @interface Table {
     int indexLengthLimit() default 32;
 
     /**
-     * Auto increment id
+     * Auto increment id, auto_increment to be used if the value of autoIncrement is greater than -1
      * @return
      */
-    boolean autoIncrement() default false;
+    long autoIncrement() default -1;
 
 
     DataIsolationPolicy dataIsolationPolicy() default DataIsolationPolicy.AUTO;

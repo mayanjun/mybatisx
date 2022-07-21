@@ -115,7 +115,7 @@ public class MysqlSchemeGenerator {
             }
 
             if (primaryHolder != null) {
-                cd = renderColumn(primaryHolder, true, table.autoIncrement()) + (SqlUtils.isBlank(cd) ? "" : ",\r\n") + cd;
+                cd = renderColumn(primaryHolder, true, table.autoIncrement() > -1) + (SqlUtils.isBlank(cd) ? "" : ",\r\n") + cd;
             }
 
             stringBuffer.append(cd);
@@ -255,6 +255,11 @@ public class MysqlSchemeGenerator {
             engine = table.engine();
         }
         stringBuffer.append("ENGINE=" + engine);
+
+        if (table.autoIncrement() > -1) {
+            stringBuffer.append(" AUTO_INCREMENT=" + table.autoIncrement());
+        }
+
         if (SqlUtils.isBlank(table.charset())) stringBuffer.append(" DEFAULT CHARSET=utf8");
         else stringBuffer.append(" DEFAULT CHARSET=" + table.charset());
 
