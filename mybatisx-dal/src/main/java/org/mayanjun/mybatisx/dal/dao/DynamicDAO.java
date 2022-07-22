@@ -41,10 +41,10 @@ import org.mayanjun.mybatisx.api.query.EquivalentComparator;
 import org.mayanjun.mybatisx.api.query.LogicalOperator;
 import org.mayanjun.mybatisx.api.query.Query;
 import org.mayanjun.mybatisx.api.query.QueryBuilder;
+import org.mayanjun.mybatisx.dal.Assert;
 import org.mayanjun.mybatisx.dal.IdGenerator;
 import org.mayanjun.mybatisx.dal.Sharding;
 import org.mayanjun.mybatisx.dal.ShardingEntityAccessor;
-import org.mayanjun.mybatisx.dal.generator.AnnotationHelper;
 import org.mayanjun.mybatisx.dal.parser.PreparedQueryParser;
 import org.mayanjun.mybatisx.dal.parser.QueryParser;
 import org.mayanjun.mybatisx.dal.parser.SQLParameter;
@@ -56,7 +56,6 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
-import org.springframework.util.Assert;
 
 import java.io.Serializable;
 import java.util.*;
@@ -281,8 +280,13 @@ public class DynamicDAO implements DataBaseRouteAccessor, ShardingEntityAccessor
 
     @Override
     public int save(Entity bean, Sharding sharding) {
+        return save(bean, sharding, isAutoIncrement(bean));
+    }
+
+    private boolean isAutoIncrement(Entity bean) {
         Table table = bean.getClass().getAnnotation(Table.class);
-        return save(bean, sharding, table.autoIncrement() > -1);
+        Assert.notNull(table, "No @Table annotation found");
+        return table.autoIncrement() > -1;
     }
 
     @Override
@@ -316,7 +320,7 @@ public class DynamicDAO implements DataBaseRouteAccessor, ShardingEntityAccessor
 
     @Override
     public int saveOrUpdate(final Entity bean, final Sharding sharding) {
-        return saveOrUpdate(bean, sharding, false);
+        return saveOrUpdate(bean, sharding, isAutoIncrement(bean));
     }
 
     @Override
