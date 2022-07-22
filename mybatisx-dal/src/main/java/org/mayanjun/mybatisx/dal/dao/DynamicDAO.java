@@ -258,7 +258,6 @@ public class DynamicDAO implements DataBaseRouteAccessor, ShardingEntityAccessor
             ((EditableEntity) bean).setModifiedTime(new Date());
         }
         SqlSession sqlSession = getSqlSession(sharding, bean).sqlSession();
-
         DynamicMapper<Entity> mapper = getMapper(bean.getClass(), sqlSession);
         return mapper.update(bean, sharding);
     }
@@ -269,8 +268,6 @@ public class DynamicDAO implements DataBaseRouteAccessor, ShardingEntityAccessor
             ((EditableEntity) bean).setCreatedTime(null);
             ((EditableEntity) bean).setModifiedTime(new Date());
         }
-
-
         SQLParameter<Entity> parameter = (SQLParameter<Entity>)parser.parse(query);
         parameter.setEntity(bean);
         SqlSession sqlSession = getSqlSession(sharding, bean).sqlSession();
@@ -283,6 +280,11 @@ public class DynamicDAO implements DataBaseRouteAccessor, ShardingEntityAccessor
         return save(bean, sharding, isAutoIncrement(bean));
     }
 
+    /**
+     * 确定实体是不是自增ID
+     * @param bean
+     * @return
+     */
     private boolean isAutoIncrement(Entity bean) {
         Table table = bean.getClass().getAnnotation(Table.class);
         Assert.notNull(table, "No @Table annotation found");
@@ -299,20 +301,15 @@ public class DynamicDAO implements DataBaseRouteAccessor, ShardingEntityAccessor
         }
 
         DatabaseSession session = getSqlSession(sharding, bean);
-        Long id = null;
-        if (! isAutoIncrementId) {
-            try {
-                id = (Long) bean.getId();
-            } catch (Exception e){}
 
-            if(id == null) { // generate id
-                IdGenerator generator = session.idGenerator();
-                if (session.idGenerator() != null) {
-                    id = generator.next();
-                }
+        Serializable id = bean.getId();
+
+        if (id == null) { // id为null时，需要考虑ID的生成方式
+            if (!isAutoIncrementId) {
+                bean.setId(session.idGenerator().next());
             }
         }
-        bean.setId(id);
+
         DynamicMapper<Entity> mapper = getMapper(bean.getClass(), session.sqlSession());
 
         return mapper.insert(bean, sharding);
