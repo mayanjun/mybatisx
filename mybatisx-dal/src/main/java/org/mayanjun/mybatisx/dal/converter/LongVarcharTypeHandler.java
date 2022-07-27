@@ -16,30 +16,25 @@
 
 package org.mayanjun.mybatisx.dal.converter;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
 import org.apache.ibatis.type.MappedTypes;
 
 /**
- * MyBatis String数组和VarChar的转换器
- * @since 2019-07-06
+ * Long[] 与 varchar 转换
+ * @since 2022/7/27
  * @author mayanjun
  */
-@MappedTypes({String[].class})
+@MappedTypes({Long[].class})
 @MappedJdbcTypes({JdbcType.VARCHAR})
-public class StringArrayVarcharTypeHandler extends ArrayVarcharTypeHandler<String[]> {
+public class LongVarcharTypeHandler extends ArrayVarcharTypeHandler<Long[]> {
 
     @Override
     public Object convert(String s, Class type) {
-        return s;
-    }
-
-    public static void main(String[] args) {
-        LongVarcharTypeHandler h = new LongVarcharTypeHandler();
-
-        System.out.println(h.arrayToString(new Long[] {1L,2L,3L}));
-
-        Long s[] = h.toArray("1,2,3");
-        System.out.println(s);
+        if (StringUtils.isNumeric(s)) {
+            return Long.parseLong(s);
+        }
+        return null;
     }
 }
