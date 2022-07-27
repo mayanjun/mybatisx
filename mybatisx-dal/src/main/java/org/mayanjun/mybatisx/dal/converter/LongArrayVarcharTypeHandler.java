@@ -28,7 +28,7 @@ import org.apache.ibatis.type.MappedTypes;
  */
 @MappedTypes({Long[].class})
 @MappedJdbcTypes({JdbcType.VARCHAR})
-public class LongVarcharTypeHandler extends ArrayVarcharTypeHandler<Long[]> {
+public class LongArrayVarcharTypeHandler extends ArrayVarcharTypeHandler<Long[]> {
 
     @Override
     public Object convert(String s, Class type) {

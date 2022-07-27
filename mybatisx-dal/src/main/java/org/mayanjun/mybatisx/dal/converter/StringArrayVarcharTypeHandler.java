@@ -33,13 +33,4 @@ public class StringArrayVarcharTypeHandler extends ArrayVarcharTypeHandler<Strin
     public Object convert(String s, Class type) {
         return s;
     }
-
-    public static void main(String[] args) {
-        LongVarcharTypeHandler h = new LongVarcharTypeHandler();
-
-        System.out.println(h.arrayToString(new Long[] {1L,2L,3L}));
-
-        Long s[] = h.toArray("1,2,3");
-        System.out.println(s);
-    }
 }
