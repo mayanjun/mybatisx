@@ -24,7 +24,6 @@ import org.mayanjun.mybatisx.dal.util.SqlUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Generate the DDL for mysql
@@ -136,7 +135,7 @@ public class MysqlSchemeGenerator {
                 Index idx = indexes[i];
                 String name = idx.value();
                 if ("#".equals(name)) {
-                    name = "idx_" + Math.abs(UUID.randomUUID().toString().hashCode());
+                    name = generateIndexName(idx);
                 }
                 String idxDef = ",\r\n";
                 if (format) idxDef += "\t";
@@ -148,6 +147,15 @@ public class MysqlSchemeGenerator {
                 stringBuffer.append(idxDef);
             }
         }
+    }
+
+    private String generateIndexName(Index index) {
+        StringBuffer sb = new StringBuffer("idx");
+        IndexColumn [] columns = index.columns();
+        for (int i = 0; i < columns.length; i++) {
+            sb.append("_").append(columns[i].value());
+        }
+        return sb.toString();
     }
 
     private String toString(Table table, IndexColumn[] ics, Class<?> beanType) {
