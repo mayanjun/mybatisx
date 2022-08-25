@@ -73,7 +73,7 @@ public @interface Table {
      */
     String comment() default "";
 
-    String collate() default "utf8_bin";
+    String collate() default "utf8mb4_general_ci";
 
     /**
      * Specify the limit number of index length
