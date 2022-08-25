@@ -18,6 +18,7 @@ package org.mayanjun.mybatisx.api;
 import org.mayanjun.mybatisx.api.entity.Entity;
 import org.mayanjun.mybatisx.api.query.Query;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -104,32 +105,15 @@ public interface EntityAccessor {
     int delete(Query<? extends Entity> query);
 
     /**
-     * Get a bean that the specified fields is excluded
-     * @param entity
-     * @param excludeFields
-     * @param <T>
-     * @return
-     */
-    <T extends Entity> T getExclude(Entity entity, String... excludeFields);
-
-    /**
      * Get a bean that only the specified fields is included
      * @param entity
      * @param includeFields
      * @param <T>
      * @return
      */
-	<T extends Entity> T getInclude(Entity entity, String... includeFields);
+    <T extends Entity> T getInclude(Entity entity, String... includeFields);
 
-    /**
-     * Get a bean that the specified fields is excluded
-     * @param entity
-     * @param forUpdate pessimistic lock
-     * @param excludeFields
-     * @param <T>
-     * @return
-     */
-    <T extends Entity> T getExclude(Entity entity, boolean forUpdate, String... excludeFields);
+    //<T extends Entity> T getInclude(Serializable id, Class<T> cls, String... includeFields);
 
     /**
      * Get a bean that only the specified fields is included
@@ -140,6 +124,30 @@ public interface EntityAccessor {
      * @return
      */
     <T extends Entity> T getInclude(Entity entity, boolean forUpdate, String... includeFields);
+
+    //<T extends Entity> T getInclude(Serializable id, Class<T> cls, boolean forUpdate, String... includeFields);
+
+    /**
+     * Get a bean that the specified fields is excluded
+     * @param entity
+     * @param excludeFields
+     * @param <T>
+     * @return
+     */
+    <T extends Entity> T getExclude(Entity entity, String... excludeFields);
+    //<T extends Entity> T getExclude(Serializable id, Class<T> cls, String... excludeFields);
+
+    /**
+     * Get a bean that the specified fields is excluded
+     * @param entity
+     * @param forUpdate pessimistic lock
+     * @param excludeFields
+     * @param <T>
+     * @return
+     */
+    <T extends Entity> T getExclude(Entity entity, boolean forUpdate, String... excludeFields);
+    //<T extends Entity> T getExclude(Serializable id, Class<T> cls, boolean forUpdate, String... excludeFields);
+
 
     /**
      * Count rows

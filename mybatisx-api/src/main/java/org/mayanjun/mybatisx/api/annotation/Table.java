@@ -65,7 +65,7 @@ public @interface Table {
      * Specifies the default charset
      * @return charset name
      */
-    String charset() default "utf8";
+    String charset() default "utf8mb4";
 
     /**
      * Specifies comment
