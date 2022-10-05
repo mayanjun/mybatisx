@@ -172,6 +172,16 @@ public class AnnotationHelper {
     }
 
     /**
+     * 列是否存在
+     * @param cls
+     * @param column
+     * @return
+     */
+    public boolean isColumnExists(Class<?> cls, String column) {
+        return getAnnotationHolder(column, cls) != null;
+    }
+
+    /**
      * Returns the {@link AnnotationHolder} map
      * @param cls bean type
      * @return Returns the {@link AnnotationHolder} map
