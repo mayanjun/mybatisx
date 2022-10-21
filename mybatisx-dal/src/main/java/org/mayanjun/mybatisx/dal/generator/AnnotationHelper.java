@@ -177,7 +177,7 @@ public class AnnotationHelper {
      * @param column
      * @return
      */
-    public boolean isColumnExists(Class<?> cls, String column) {
+    public static boolean isColumnExists(Class<?> cls, String column) {
         return getAnnotationHolder(column, cls) != null;
     }
 
