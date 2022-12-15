@@ -55,13 +55,17 @@ public class BasicDaoFactoryBean implements FactoryBean<BasicDAO>, ApplicationRu
     private ResourceLoader resourceLoader;
 
     private Map<Class<? extends IdGenerator>, IdGenerator> reusableIdGenerators = new HashMap<Class<? extends IdGenerator>, IdGenerator>();
+
     private volatile IdGenerator defaultIdGenerator;
 
     private DataIsolationValueProvider provider;
 
-    public BasicDaoFactoryBean(@Autowired(required = false) MybatisxConfig config, DataIsolationValueProvider provider) {
+
+    public BasicDaoFactoryBean(@Autowired(required = false) MybatisxConfig config,
+                               DataIsolationValueProvider provider, IdGenerator defaultIdGenerator) {
         this.config = config;
         this.provider = provider;
+        this.defaultIdGenerator = defaultIdGenerator;
     }
 
     /**
@@ -90,15 +94,19 @@ public class BasicDaoFactoryBean implements FactoryBean<BasicDAO>, ApplicationRu
             }
         }
 
+        // 看看用户有没有配置数据源ID生成器的索引，如果配置了就使用这个索引创建ID生成器
         if (generator == null) {
-            if (defaultIdGenerator == null) {
-                synchronized (this) {
-                    int indexes[] = dataSourceConfig.getSnowflakeIndexes();
-                    defaultIdGenerator = new SnowflakeIDGenerator(indexes);
-                }
+            int indexes[] = dataSourceConfig.getSnowflakeIndexes();
+            if (indexes != null && indexes.length > 0) {
+                generator = new SnowflakeIDGenerator(indexes);
             }
-            generator = defaultIdGenerator;
         }
+
+        // 到这里有可能还是null
+        if (generator == null) {
+            generator = this.defaultIdGenerator;
+        }
+
         return generator;
     }
 

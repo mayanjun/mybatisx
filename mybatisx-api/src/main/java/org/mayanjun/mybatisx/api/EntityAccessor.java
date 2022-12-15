@@ -18,7 +18,6 @@ package org.mayanjun.mybatisx.api;
 import org.mayanjun.mybatisx.api.entity.Entity;
 import org.mayanjun.mybatisx.api.query.Query;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**

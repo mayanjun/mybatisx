@@ -25,9 +25,12 @@ import javassist.bytecode.ClassFile;
 import javassist.bytecode.ConstPool;
 import javassist.bytecode.SignatureAttribute;
 import javassist.bytecode.annotation.Annotation;
-import org.apache.commons.beanutils.BeanUtilsBean2;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.binding.BindingException;
+import org.apache.ibatis.ognl.MemberAccess;
+import org.apache.ibatis.ognl.Ognl;
+import org.apache.ibatis.ognl.OgnlContext;
 import org.apache.ibatis.session.SqlSession;
 import org.mayanjun.mybatisx.api.annotation.Index;
 import org.mayanjun.mybatisx.api.annotation.IndexColumn;
@@ -42,9 +45,10 @@ import org.mayanjun.mybatisx.api.query.LogicalOperator;
 import org.mayanjun.mybatisx.api.query.Query;
 import org.mayanjun.mybatisx.api.query.QueryBuilder;
 import org.mayanjun.mybatisx.dal.Assert;
-import org.mayanjun.mybatisx.dal.IdGenerator;
 import org.mayanjun.mybatisx.dal.Sharding;
 import org.mayanjun.mybatisx.dal.ShardingEntityAccessor;
+import org.mayanjun.mybatisx.dal.generator.AnnotationHelper;
+import org.mayanjun.mybatisx.dal.generator.AnnotationHolder;
 import org.mayanjun.mybatisx.dal.parser.PreparedQueryParser;
 import org.mayanjun.mybatisx.dal.parser.QueryParser;
 import org.mayanjun.mybatisx.dal.parser.SQLParameter;
@@ -58,7 +62,10 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -69,6 +76,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DynamicDAO implements DataBaseRouteAccessor, ShardingEntityAccessor, InitializingBean {
 
     private static final Logger LOG = LoggerFactory.getLogger(DynamicDAO.class);
+    private static final MemberAccess OGNL_MEMBER_ACCESS = new DefaultOgnlMemberAccess();
 
     private DatabaseRouter router;
     private Map<Class<?>, Class<?>> entityMapperClassesCache = new ConcurrentHashMap<Class<?>, Class<?>>();
@@ -379,7 +387,21 @@ public class DynamicDAO implements DataBaseRouteAccessor, ShardingEntityAccessor
                 IndexColumn columns[] = index.columns();
                 for (IndexColumn ic : columns) {
                     String name = ic.value();
-                    Object value = BeanUtilsBean2.getInstance().getPropertyUtils().getProperty(bean, ic.value());
+                    AnnotationHolder holder = AnnotationHelper.getAnnotationHolder(name, bean.getClass());
+                    if (holder != null && holder.getColumn() != null) {
+                        String ref = holder.getColumn().referenceField();
+                        if (StringUtils.isNotBlank(ref)) {
+                            name += "." + ref;
+                        }
+                    }
+
+                    //Object value = BeanUtilsBean2.getInstance().getPropertyUtils().getProperty(bean, ic.value());
+                    Object value = null;
+                    try {
+                        OgnlContext context = new OgnlContext(null, null, OGNL_MEMBER_ACCESS);
+                        value = Ognl.getValue(name, context, bean);
+                    } catch (Exception e) {}
+
                     if (value != null) {
                         valueSet = true;
                         builder.andEquivalent(name, value);
