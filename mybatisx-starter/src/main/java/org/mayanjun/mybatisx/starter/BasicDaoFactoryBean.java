@@ -60,10 +60,15 @@ public class BasicDaoFactoryBean implements FactoryBean<BasicDAO>, ApplicationRu
 
     private DataIsolationValueProvider provider;
 
+    private BeanUpdatePostHandler beanUpdatePostHandler;
+
 
     public BasicDaoFactoryBean(@Autowired(required = false) MybatisxConfig config,
-                               DataIsolationValueProvider provider, IdGenerator defaultIdGenerator) {
+                               BeanUpdatePostHandler beanUpdatePostHandler,
+                               DataIsolationValueProvider provider,
+                               IdGenerator defaultIdGenerator) {
         this.config = config;
+        this.beanUpdatePostHandler = beanUpdatePostHandler;
         this.provider = provider;
         this.defaultIdGenerator = defaultIdGenerator;
     }
@@ -75,7 +80,6 @@ public class BasicDaoFactoryBean implements FactoryBean<BasicDAO>, ApplicationRu
      */
     private IdGenerator newIdGenerator(DataSourceConfig dataSourceConfig) {
         IdGenerator generator = null;
-
         Class<? extends IdGenerator> type = dataSourceConfig.getIdGeneratorType();
 
         if (type != null) {

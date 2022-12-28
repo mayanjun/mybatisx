@@ -56,6 +56,7 @@ import org.mayanjun.mybatisx.dal.sharding.StaticSharding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.core.log.LogFormatUtils;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -83,6 +84,12 @@ public class DynamicDAO implements DataBaseRouteAccessor, ShardingEntityAccessor
 
     private QueryParser parser = new PreparedQueryParser(DynamicMapper.PARAM_NAME);
     private Sharding defaultSharding = new DefaultSharding();
+
+    private BeanUpdatePostHandler beanUpdatePostHandler;
+
+    public void setBeanUpdatePostHandler(BeanUpdatePostHandler beanUpdatePostHandler) {
+        this.beanUpdatePostHandler = beanUpdatePostHandler;
+    }
 
     /**
      * 执行主数据库事务
@@ -128,7 +135,6 @@ public class DynamicDAO implements DataBaseRouteAccessor, ShardingEntityAccessor
     public <T extends Entity> T queryOne(Query<T> query) {
         return queryOne(query, defaultSharding);
     }
-
 
     @Override
     public int update(Entity bean) {
@@ -267,7 +273,24 @@ public class DynamicDAO implements DataBaseRouteAccessor, ShardingEntityAccessor
         }
         SqlSession sqlSession = getSqlSession(sharding, bean).sqlSession();
         DynamicMapper<Entity> mapper = getMapper(bean.getClass(), sqlSession);
-        return mapper.update(bean, sharding);
+
+        int ret = mapper.update(bean, sharding);
+        executePostUpdate(ret, bean);
+        return ret;
+    }
+
+    private void executePostUpdate(int ret, Entity entity) {
+        if (entity == null) return;
+        if (ret > 0) {
+            try {
+                this.beanUpdatePostHandler.postUpdate(entity);
+            } catch (Throwable e) {
+                LOG.warn(
+                        "Execute BeanUpdatePostHandler.postUpdate() error: class=" + entity.getClass() + ", id=" + entity.getId(),
+                        e
+                );
+            }
+        }
     }
 
     @Override

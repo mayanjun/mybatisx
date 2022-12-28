@@ -16,8 +16,10 @@
 
 package org.mayanjun.mybatisx.starter;
 
+import org.mayanjun.mybatisx.api.entity.Entity;
 import org.mayanjun.mybatisx.dal.IdGenerator;
 import org.mayanjun.mybatisx.dal.dao.BasicDAO;
+import org.mayanjun.mybatisx.dal.dao.BeanUpdatePostHandler;
 import org.mayanjun.mybatisx.dal.dao.DataIsolationValueProvider;
 import org.mayanjun.mybatisx.dal.dao.DefaultDataIsolationValueProvider;
 import org.mayanjun.mybatisx.dal.generator.SnowflakeIDGenerator;
@@ -58,9 +60,22 @@ public class MybatisxAutoConfiguration implements ResourceLoaderAware {
     }
 
     @Bean
+    @ConditionalOnMissingBean(BeanUpdatePostHandler.class)
+    public BeanUpdatePostHandler beanUpdatePostHandler() {
+        return new BeanUpdatePostHandler() {
+            @Override
+            public void postUpdate(Entity entity) {
+                // nothing to do
+            }
+        };
+    }
+
+    @Bean
     @ConditionalOnMissingBean(BasicDAO.class)
-    public BasicDAO dao(DataIsolationValueProvider provider, IdGenerator idGenerator) throws Exception {
-        BasicDaoFactoryBean factory = new BasicDaoFactoryBean(config, provider,  idGenerator);
+    public BasicDAO dao(BeanUpdatePostHandler beanUpdatePostHandler,
+                        DataIsolationValueProvider provider,
+                        IdGenerator idGenerator) throws Exception {
+        BasicDaoFactoryBean factory = new BasicDaoFactoryBean(config, beanUpdatePostHandler, provider,  idGenerator);
         factory.setResourceLoader(resourceLoader);
         BasicDAO dao = factory.getObject();
         LOG.info("BasicDAO create successfully");

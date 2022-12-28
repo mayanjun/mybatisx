@@ -156,6 +156,18 @@ public interface Query<T extends Serializable> extends Serializable {
 	Query<T> addSort(Sort sort);
 
 	/**
+	 * 清空所有排序字段
+	 * @return
+	 */
+	Query<T> clearSort();
+
+	/**
+	 * 删除一个排序字段
+	 * @return
+	 */
+	Query<T> removeSort(String field);
+
+	/**
 	 * Returns the sort fields
 	 * @return
 	 */

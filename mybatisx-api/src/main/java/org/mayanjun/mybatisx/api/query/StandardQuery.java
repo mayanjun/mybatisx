@@ -152,6 +152,18 @@ public class StandardQuery<T extends Entity> implements Query<T> {
 	}
 
 	@Override
+	public Query<T> clearSort() {
+		this.sorts.clear();
+		return this;
+	}
+
+	@Override
+	public Query<T> removeSort(String field) {
+		this.sorts.remove(field);
+		return this;
+	}
+
+	@Override
 	public Set<Sort> sorts() {
 		return Collections.unmodifiableSet(new HashSet<Sort>(sorts.values()));
 	}
