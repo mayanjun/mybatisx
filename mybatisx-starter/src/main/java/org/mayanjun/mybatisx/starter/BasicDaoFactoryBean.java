@@ -216,6 +216,7 @@ public class BasicDaoFactoryBean implements FactoryBean<BasicDAO>, ApplicationRu
 
         final BasicDAO dao = basicDAO;
         dao.setRouter(router);
+        dao.setBeanUpdatePostHandler(this.beanUpdatePostHandler);
 
         // 扫描实体资源，进行Mapper预生成：为了解决在系统初始化过程中并发访问的情况下Mapper生成失败的问题，
         // 一般会在windows JVM下出现，这里可以在生成DAO前预先生成Mapper，避免在高并发下出现No Mapper问题
