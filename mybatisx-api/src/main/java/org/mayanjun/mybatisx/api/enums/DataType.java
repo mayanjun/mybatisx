@@ -16,50 +16,62 @@
 
 package org.mayanjun.mybatisx.api.enums;
 
+
 /**
  * DataType
  *
  * @author mayanjun(8/19/15)
  */
 public enum DataType {
-    INT("0", true),
-    TINYINT("0", true),
-    BIGINT("0", true),
-    SMALLINT("0", true),
-    MEDIUMINT("0", true),
+    BIT("b'0'", false,  1),
 
-    FLOAT("0", true),
-    DOUBLE("0", true),
-    BIT("b'0'", false),
+    TINYINT("0", true, 1),
 
-    CHAR("''", true),
-    VARCHAR("''", false),
-    TINYTEXT(null, false),
-    TEXT(null, false),
-    MEDIUMTEXT(null, false),
-    LONGTEXT(null, false),
+    SMALLINT("0", true, 2),
 
-    BLOB(null, false),
-    TINYBLOB(null, false),
-    MEDIUMBLOB(null, false),
-    LONGBLOB(null, false),
-    BINARY("''", false),
-    VARBINARY("''", false),
-    ENUM(null, false),
-    SET(null, false),
+    MEDIUMINT("0", true, 3),
 
-    DATE("'0000-00-00'", false),
-    DATETIME("'0000-00-00 00:00:00'", false),
-    TIMESTAMP("'0000-00-00 00:00:00'", false),
-    TIME("'00:00:00'", false),
-    YEAR("'0000'", false);
+    INT("0", true, 4),
+
+    BIGINT("0", true, 8),
+
+
+
+    FLOAT("0", true, 4),
+    DOUBLE("0", true, 8),
+
+
+    CHAR("''", true, 255),
+    VARCHAR("''", false, 65536),
+    TINYTEXT(null, false, 255),
+    TEXT(null, false, 65536),
+    MEDIUMTEXT(null, false, 16777215),
+    LONGTEXT(null, false, 4294967295l),
+
+    BLOB(null, false, 65536),
+    TINYBLOB(null, false, 255),
+    MEDIUMBLOB(null, false, 1677215),
+    LONGBLOB(null, false, 4294967295l),
+    BINARY("''", false, Long.MAX_VALUE),
+    VARBINARY("''", false, -1),
+    ENUM(null, false, 2),
+    SET(null, false, 3),
+
+    DATE("'0000-00-00'", false ,3),
+    DATETIME("'0000-00-00 00:00:00'", false, 8),
+    TIMESTAMP("'0000-00-00 00:00:00'", false, 4),
+    TIME("'00:00:00'", false, 3),
+    YEAR("'0000'", false, 1);
 
     private String defaultValue;
     private boolean numeric;
 
-    DataType(String defaultValue, boolean numeric) {
+    private long dateTypeSize;
+
+    DataType(String defaultValue, boolean numeric, long dateTypeSize) {
         this.defaultValue = defaultValue;
         this.numeric = numeric;
+        this.dateTypeSize = dateTypeSize;
     }
 
     public String getDefaultValue() {
@@ -68,5 +80,9 @@ public enum DataType {
 
     public boolean isNumeric() {
         return numeric;
+    }
+
+    public long getDateTypeSize() {
+        return dateTypeSize;
     }
 }

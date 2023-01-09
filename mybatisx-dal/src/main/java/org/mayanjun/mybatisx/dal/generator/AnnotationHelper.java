@@ -20,6 +20,7 @@ import org.mayanjun.mybatisx.api.annotation.Column;
 import org.mayanjun.mybatisx.api.annotation.ComponentColumn;
 import org.mayanjun.mybatisx.api.annotation.PrimaryKey;
 import org.mayanjun.mybatisx.api.annotation.Table;
+import org.mayanjun.mybatisx.api.enums.DataType;
 import org.mayanjun.mybatisx.dal.util.ClassUtils;
 import org.mayanjun.mybatisx.dal.util.SqlUtils;
 
@@ -211,18 +212,24 @@ public class AnnotationHelper {
                     public int compare(AnnotationHolder o1, AnnotationHolder o2) {
                         String s1 = "";
                         String s2 = "";
+
                         if (!SqlUtils.isBlank(o1.getColumn().length())) s1 = o1.getColumn().length();
                         if (!SqlUtils.isBlank(o2.getColumn().length())) s2 = o2.getColumn().length();
-                        int i1 = 0;
+
+                        long i1 = 0;
                         try {
-                            i1 = Integer.parseInt(s1);
+                            i1 = Long.parseLong(s1);
                         } catch (NumberFormatException e) {
+                            i1 = o1.getColumn().type().getDateTypeSize();
                         }
-                        int i2 = 0;
+
+                        long i2 = 0;
                         try {
-                            i2 = Integer.parseInt(s2);
+                            i2 = Long.parseLong(s2);
                         } catch (NumberFormatException e) {
+                            i2 = o2.getColumn().type().getDateTypeSize();
                         }
+
                         return i1 > i2 ? 1 : (i1 < i2 ? -1 : 0);
                     }
                 });
