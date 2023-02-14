@@ -19,6 +19,7 @@ package org.mayanjun.mybatisx.dal.converter;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.mayanjun.mybatisx.dal.util.ClassUtils;
+import org.mayanjun.mybatisx.dal.util.JsonUtils;
 
 import java.lang.reflect.Array;
 import java.sql.CallableStatement;
@@ -36,56 +37,26 @@ import java.util.List;
 public abstract class ArrayVarcharTypeHandler<T> extends BaseTypeHandler<T> {
 
     protected String arrayToString(T array) {
-        if (array == null || !array.getClass().isArray() || Array.getLength(array) == 0) return "";
-
-        StringBuffer sb = new StringBuffer();
-        int length = Array.getLength(array);
-
-        for (int i = 0; i < length; i++) {
-            Object o = Array.get(array, i);
-            sb.append(o != null ? o.toString() : "");
-            if (i < length - 1) sb.append(",");
-        }
-        return sb.toString();
+        if (array == null || !array.getClass().isArray() || Array.getLength(array) == 0) return "[]";
+        return JsonUtils.se(array);
     }
 
     private Class<?> componentType;
     private Class<?> getComponentType() {
         if (componentType == null) {
-            Class arrayType = ClassUtils.getFirstParameterizedType(this.getClass());
-            componentType = arrayType.getComponentType();
+            componentType = ClassUtils.getFirstParameterizedType(this.getClass());
+            //Class arrayType = ClassUtils.getFirstParameterizedType(this.getClass());
+            //componentType = arrayType.getComponentType();
         }
         return componentType;
     }
 
     protected T toArray(String s) {
         Class ct = getComponentType();
-        if (s == null) return (T) Array.newInstance(ct, 0);
-        String ss[] = s.split(",");
-        List list = new ArrayList();
-        for (String e : ss) {
-            Object o = null;
-            try {
-                o = convert(e, ct);
-            } catch (Exception ex) {}
-            if (o != null) list.add(o);
-        }
-        T array = (T) Array.newInstance(ct, list.size());
-
-        for (int i = 0; i < list.size(); i++) {
-            Array.set(array, i, list.get(i));
-        }
-
-        return array;
+        T a = (T) JsonUtils.de(s, ct);
+        if (a == null) return (T) Array.newInstance(ct.getComponentType(), 0);
+        return a;
     }
-
-    /**
-     * 转换成对应元素类型
-     * @param s
-     * @param type
-     * @return
-     */
-    public abstract Object convert(String s, Class type);
 
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, T parameter, JdbcType jdbcType) throws SQLException {
