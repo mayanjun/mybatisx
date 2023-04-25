@@ -25,6 +25,7 @@ import org.mayanjun.mybatisx.dal.converter.PropertiesFactoryBean;
 import org.mayanjun.mybatisx.dal.dao.*;
 import org.mayanjun.mybatisx.dal.generator.DDL;
 import org.mayanjun.mybatisx.dal.generator.SnowflakeIDGenerator;
+import org.mayanjun.mybatisx.dal.sharding.DefaultShardingProvider;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
@@ -61,16 +62,19 @@ public class BasicDaoFactoryBean implements FactoryBean<BasicDAO>, ApplicationRu
     private DataIsolationValueProvider provider;
 
     private BeanUpdatePostHandler beanUpdatePostHandler;
+    private DefaultShardingProvider defaultShardingProvider;
 
 
     public BasicDaoFactoryBean(@Autowired(required = false) MybatisxConfig config,
                                BeanUpdatePostHandler beanUpdatePostHandler,
                                DataIsolationValueProvider provider,
-                               IdGenerator defaultIdGenerator) {
+                               IdGenerator defaultIdGenerator,
+                               DefaultShardingProvider defaultShardingProvider) {
         this.config = config;
         this.beanUpdatePostHandler = beanUpdatePostHandler;
         this.provider = provider;
         this.defaultIdGenerator = defaultIdGenerator;
+        this.defaultShardingProvider = defaultShardingProvider;
     }
 
     /**
@@ -208,10 +212,10 @@ public class BasicDaoFactoryBean implements FactoryBean<BasicDAO>, ApplicationRu
         Assert.notNull(config, "config can not be null");
         final DatabaseRouter router = newDataBaseRouter(config);
 
-        BasicDAO basicDAO = new BasicDAO();
+        BasicDAO basicDAO = new BasicDAO(defaultShardingProvider);
         if (config.isSupportDataIsolation()) {
             Assert.notBlank(config.getDataIsolationField(), "The data isolation field must be specified if the supportDataIsolation is true");
-            basicDAO = new DataIsolationDAO(config.getDataIsolationField(), provider);
+            basicDAO = new DataIsolationDAO(config.getDataIsolationField(), provider, defaultShardingProvider);
         }
 
         final BasicDAO dao = basicDAO;

@@ -10,6 +10,7 @@ import org.mayanjun.mybatisx.dal.Assert;
 import org.mayanjun.mybatisx.dal.Sharding;
 import org.mayanjun.mybatisx.dal.generator.AnnotationHelper;
 import org.mayanjun.mybatisx.dal.generator.AnnotationHolder;
+import org.mayanjun.mybatisx.dal.sharding.DefaultShardingProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +23,8 @@ public class DataIsolationDAO extends BasicDAO {
     private String isolationField;
     private DataIsolationValueProvider valueProvider;
 
-    public DataIsolationDAO(String isolationField, DataIsolationValueProvider valueProvider) {
+    public DataIsolationDAO(String isolationField, DataIsolationValueProvider valueProvider, DefaultShardingProvider defaultShardingProvider) {
+        super(defaultShardingProvider);
         Assert.notBlank(isolationField, "isolationField can not be blank");
         this.isolationField = isolationField;
         this.valueProvider = valueProvider;

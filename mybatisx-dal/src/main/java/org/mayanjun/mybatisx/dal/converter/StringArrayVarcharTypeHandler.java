@@ -28,9 +28,4 @@ import org.apache.ibatis.type.MappedTypes;
 @MappedTypes({String[].class})
 @MappedJdbcTypes({JdbcType.VARCHAR})
 public class StringArrayVarcharTypeHandler extends ArrayVarcharTypeHandler<String[]> {
-
-    @Override
-    public Object convert(String s, Class type) {
-        return s;
-    }
 }

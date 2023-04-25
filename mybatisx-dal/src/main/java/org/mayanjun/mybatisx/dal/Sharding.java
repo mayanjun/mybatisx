@@ -30,6 +30,11 @@ public interface Sharding {
 
     String getTableName(Object source);
 
+    /**
+     * 获取数据库和表列表
+     * @param source
+     * @return
+     */
     Map<String, Set<String>> getDatabaseNames(Object source);
 
 }

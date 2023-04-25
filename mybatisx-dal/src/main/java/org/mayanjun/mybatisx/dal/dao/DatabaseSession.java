@@ -47,7 +47,7 @@ public class DatabaseSession {
     private DataSource dataSource;
 
     private IdGenerator idGenerator;
-    private static final Map<Class, Object> MAPPER_CACHE = new ConcurrentHashMap<Class, Object>();
+    private final Map<Class, Object> MAPPER_CACHE = new ConcurrentHashMap<Class, Object>();
 
     /**
      * Test if a Mapper class is registered

@@ -56,7 +56,6 @@ import org.mayanjun.mybatisx.dal.sharding.StaticSharding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.core.log.LogFormatUtils;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -66,7 +65,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -74,7 +72,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author mayanjun(6/24/16)
  */
-public class DynamicDAO implements DataBaseRouteAccessor, ShardingEntityAccessor, InitializingBean {
+public abstract class DynamicDAO implements DataBaseRouteAccessor, ShardingEntityAccessor, InitializingBean {
 
     private static final Logger LOG = LoggerFactory.getLogger(DynamicDAO.class);
     private static final MemberAccess OGNL_MEMBER_ACCESS = new DefaultOgnlMemberAccess();
@@ -83,8 +81,6 @@ public class DynamicDAO implements DataBaseRouteAccessor, ShardingEntityAccessor
     private Map<Class<?>, Class<?>> entityMapperClassesCache = new ConcurrentHashMap<Class<?>, Class<?>>();
 
     private QueryParser parser = new PreparedQueryParser(DynamicMapper.PARAM_NAME);
-    private Sharding defaultSharding = new DefaultSharding();
-
     private BeanUpdatePostHandler beanUpdatePostHandler;
 
     public void setBeanUpdatePostHandler(BeanUpdatePostHandler beanUpdatePostHandler) {
@@ -128,37 +124,37 @@ public class DynamicDAO implements DataBaseRouteAccessor, ShardingEntityAccessor
 
     @Override
     public <T extends Entity> List<T> query(Query<T> query) {
-        return query(query, null);
+        return query(query, defaultSharding());
     }
 
     @Override
     public <T extends Entity> T queryOne(Query<T> query) {
-        return queryOne(query, defaultSharding);
+        return queryOne(query, defaultSharding());
     }
 
     @Override
     public int update(Entity bean) {
-        return update(bean, defaultSharding);
+        return update(bean, defaultSharding());
     }
 
     @Override
     public int update(Entity bean, Query<? extends Entity> query) {
-        return update(bean, defaultSharding, query);
+        return update(bean, defaultSharding(), query);
     }
 
     @Override
     public int save(Entity bean, boolean isAutoIncrementId) {
-        return save(bean, defaultSharding, isAutoIncrementId);
+        return save(bean, defaultSharding(), isAutoIncrementId);
     }
 
     @Override
     public int save(Entity bean) {
-        return save(bean, defaultSharding);
+        return save(bean, defaultSharding());
     }
 
     @Override
     public int saveOrUpdate(Entity bean) {
-        return saveOrUpdate(bean, defaultSharding);
+        return saveOrUpdate(bean, defaultSharding());
     }
 
     @Override
@@ -168,33 +164,33 @@ public class DynamicDAO implements DataBaseRouteAccessor, ShardingEntityAccessor
 
     @Override
     public int delete(Entity bean) {
-        return delete(bean, defaultSharding);
+        return delete(bean, defaultSharding());
     }
 
     @Override
     public int delete(Query<? extends Entity> query) {
-        return delete(query, defaultSharding);
+        return delete(query, defaultSharding());
     }
 
 
     @Override
     public <T extends Entity> T getExclude(Entity bean, String... excludeFields) {
-        return getExclude(bean, null, excludeFields);
+        return getExclude(bean, defaultSharding(), excludeFields);
     }
 
     @Override
     public <T extends Entity> T getInclude(Entity bean, String... includeFields) {
-        return getInclude(bean, null, includeFields);
+        return getInclude(bean, defaultSharding(), includeFields);
     }
 
     @Override
     public <T extends Entity> T getExclude(Entity bean, boolean forUpdate, String... excludeFields) {
-        return getExclude(bean, null, false, excludeFields);
+        return getExclude(bean, defaultSharding(), false, excludeFields);
     }
 
     @Override
     public <T extends Entity> T getInclude(Entity bean, boolean forUpdate, String... includeFields) {
-        return getInclude(bean, null, false, includeFields);
+        return getInclude(bean, defaultSharding(), false, includeFields);
     }
 
 
@@ -218,7 +214,7 @@ public class DynamicDAO implements DataBaseRouteAccessor, ShardingEntityAccessor
 
     @Override
     public long count(Query<?> query) {
-        return count(query, null);
+        return count(query, defaultSharding());
     }
 
     @Override
@@ -260,6 +256,9 @@ public class DynamicDAO implements DataBaseRouteAccessor, ShardingEntityAccessor
 
     private DatabaseSession getSqlSession(Sharding sharding, Object source) {
         //SqlSession sqlSession = getDataBaseRouter().getMasterDataBaseSqlSession(); // forced to use MASTER DB
+        if (sharding == null) {
+            sharding = defaultSharding();
+        }
         DatabaseSession databaseSession = databaseRouter().getDatabaseSession(sharding, source);
         Assert.notNull(databaseSession, "Can not get SqlSession");
         return databaseSession;
@@ -573,27 +572,10 @@ public class DynamicDAO implements DataBaseRouteAccessor, ShardingEntityAccessor
         }
     }
 
-    private static class DefaultSharding implements Sharding {
-
-        @Override
-        public String getDatabaseName(Object source) {
-            return null;
-        }
-
-        @Override
-        public String getTableName(Object source) {
-            return null;
-        }
-
-        @Override
-        public Map<String, Set<String>> getDatabaseNames(Object source) {
-            return null;
-        }
-
-    }
-
     @Override
     public DatabaseRouter databaseRouter() {
         return router;
     }
+
+    protected abstract Sharding defaultSharding();
 }
