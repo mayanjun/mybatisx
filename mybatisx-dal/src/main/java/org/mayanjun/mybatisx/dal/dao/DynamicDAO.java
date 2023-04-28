@@ -94,7 +94,7 @@ public abstract class DynamicDAO implements DataBaseRouteAccessor, ShardingEntit
      * @return
      */
     public <T> T executeTransaction(TransactionCallback<T> action) {
-        return databaseRouter().getDatabaseSession().transaction().execute(action);
+        return databaseRouter().getDatabaseSession(defaultSharding(), null).transaction().execute(action);
     }
 
     /**
@@ -381,7 +381,7 @@ public abstract class DynamicDAO implements DataBaseRouteAccessor, ShardingEntit
     }
 
     private int saveOrUpdateUpdate(Query<Entity> query, Entity bean, Sharding sharding) {
-        Entity b = queryOne(query);
+        Entity b = queryOne(query, sharding);
         if (b != null) {
             bean.setId(b.getId());
             return update(bean, sharding);
@@ -561,7 +561,10 @@ public abstract class DynamicDAO implements DataBaseRouteAccessor, ShardingEntit
             DynamicMapper<Entity> mapper = (DynamicMapper<Entity>) sqlSession.getMapper(mapperClass);
             return mapper;
         } catch (BindingException e) {
-            if (mapperClass != null) sqlSession.getConfiguration().addMapper(mapperClass);
+            try {
+                if (mapperClass != null) sqlSession.getConfiguration().addMapper(mapperClass);
+            } catch (Exception ex) {}
+
             DynamicMapper<Entity> mapper = (DynamicMapper<Entity>) sqlSession.getMapper(mapperClass);
             return mapper;
         } catch (Throwable e) {
