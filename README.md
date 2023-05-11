@@ -17,3 +17,8 @@ A very easy-to-use database middleware. Please see homepage of [mybatisx](http:/
 
 ## 1.0.5
 - Added multi tenant data isolation
+
+## 1.0.6
+- Multi tenant support
+- Multi tenant transaction bug fixed
+- Default sharding provider

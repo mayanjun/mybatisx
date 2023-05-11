@@ -7,7 +7,7 @@
     <groupId>org.mayanjun</groupId>
     <artifactId>mybatisx</artifactId>
     <!--VERSION-UPGRADE-->
-    <version>1.0.5</version>
+    <version>1.0.6</version>
 
     <packaging>pom</packaging>
 
@@ -48,7 +48,7 @@
 
     <properties>
         <!--VERSION-UPGRADE-->
-        <mybatisx.version>1.0.5</mybatisx.version>
+        <mybatisx.version>1.0.6</mybatisx.version>
         <slf4j.version>1.7.25</slf4j.version>
         <mybatis.version>3.5.9</mybatis.version>
         <spring.version>5.3.18</spring.version>
