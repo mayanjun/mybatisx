@@ -33,4 +33,10 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface ComponentColumn {
     String[] excludes() default {};
+
+    /**
+     * 实体名称注释
+     * @return
+     */
+    String value();
 }
