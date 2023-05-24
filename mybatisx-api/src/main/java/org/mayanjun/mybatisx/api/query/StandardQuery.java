@@ -31,7 +31,7 @@ public class StandardQuery<T extends Entity> implements Query<T> {
 	private static final long serialVersionUID = -656396755847643907L;
 	private List<SqlComparator> comparators;
 	private int[] limits;
-	private Map<String, Sort> sorts = new HashMap<String, Sort>();
+	private Map<String, Sort> sorts = new TreeMap<String, Sort>();
 	private Class<T> beanType;
 	private List<String> excludeFields;
 	private List<String> includeFields;
@@ -165,7 +165,7 @@ public class StandardQuery<T extends Entity> implements Query<T> {
 
 	@Override
 	public Set<Sort> sorts() {
-		return Collections.unmodifiableSet(new HashSet<Sort>(sorts.values()));
+		return Collections.unmodifiableSet(new LinkedHashSet<Sort>(sorts.values()));
 	}
 
 	@Override
