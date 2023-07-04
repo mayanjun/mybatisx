@@ -25,3 +25,4 @@ A very easy-to-use database middleware. Please see homepage of [mybatisx](http:/
 
 ## 1.0.7
 - Solve the problem that multi-field sorting cannot be sorted in fields order
+- Fixed some bugs.
