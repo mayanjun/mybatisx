@@ -19,10 +19,7 @@ package org.mayanjun.mybatisx.api.query;
 import org.mayanjun.mybatisx.api.entity.Entity;
 import org.mayanjun.mybatisx.api.enums.QueryDeletedMode;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * QueryBuilder is an ultra tool to create {@link Query} instance
@@ -111,6 +108,11 @@ public class QueryBuilder<T extends Entity> {
 		return this;
 	}
 
+	public QueryBuilder<T> andIn(String name, Collection value) {
+		this.query.addComparator(new InComparator(name, value, false, LogicalOperator.AND));
+		return this;
+	}
+
 	/**
 	 * Add NOT IN condition
 	 * @param name field name
@@ -118,6 +120,11 @@ public class QueryBuilder<T extends Entity> {
 	 * @return current instance of QueryBuilder
 	 */
 	public QueryBuilder<T> andNotIn(String name, Object value[]) {
+		this.query.addComparator(new InComparator(name, value, true, LogicalOperator.AND));
+		return this;
+	}
+
+	public QueryBuilder<T> andNotIn(String name, Collection value) {
 		this.query.addComparator(new InComparator(name, value, true, LogicalOperator.AND));
 		return this;
 	}
@@ -130,6 +137,11 @@ public class QueryBuilder<T extends Entity> {
 	 * @return current instance of QueryBuilder
 	 */
 	public QueryBuilder<T> andIn(String name, Object value[], boolean reverse) {
+		this.query.addComparator(new InComparator(name, value, reverse, LogicalOperator.AND));
+		return this;
+	}
+
+	public QueryBuilder<T> andIn(String name, Collection value, boolean reverse) {
 		this.query.addComparator(new InComparator(name, value, reverse, LogicalOperator.AND));
 		return this;
 	}
