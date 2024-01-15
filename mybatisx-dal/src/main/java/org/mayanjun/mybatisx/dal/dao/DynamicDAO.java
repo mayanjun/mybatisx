@@ -302,7 +302,9 @@ public abstract class DynamicDAO implements DataBaseRouteAccessor, ShardingEntit
         parameter.setEntity(bean);
         SqlSession sqlSession = getSqlSession(sharding, bean).sqlSession();
         DynamicMapper<Entity> mapper = getMapper(bean.getClass(), sqlSession);
-        return mapper.queryUpdate(parameter, sharding);
+        int ret = mapper.queryUpdate(parameter, sharding);
+        executePostUpdate(ret, bean);
+        return ret;
     }
 
     @Override
