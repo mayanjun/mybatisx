@@ -34,9 +34,7 @@ public enum DataType {
     INT("0", true, 4),
 
     BIGINT("0", true, 8),
-
-
-
+    
     FLOAT("0", true, 4),
     DOUBLE("0", true, 8),
     DECIMAL("0", true, -1),

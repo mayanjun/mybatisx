@@ -24,5 +24,6 @@ A very easy-to-use database middleware. Please see homepage of [mybatisx](http:/
 - Default sharding provider
 
 ## 1.0.7
-- Solve the problem that multi-field sorting cannot be sorted in fields order
+- Solve the problem that multi-field sorting cannot be sorted in fields order.
+- DataType optimized.
 - Fixed some bugs.
