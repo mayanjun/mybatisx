@@ -68,7 +68,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * A default implementation of
+ * A default implementation of DAO
  *
  * @author mayanjun(6/24/16)
  */

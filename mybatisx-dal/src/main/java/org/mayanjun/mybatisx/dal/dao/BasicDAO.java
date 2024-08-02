@@ -27,6 +27,7 @@ import java.util.Set;
 
 /**
  * BasicDAO
+ * 基础DAO操作，核心操作API
  *
  * @author mayanjun(6/30/16)
  */

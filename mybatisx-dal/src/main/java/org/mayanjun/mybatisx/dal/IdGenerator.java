@@ -17,7 +17,9 @@
 package org.mayanjun.mybatisx.dal;
 
 /**
- * ID生成器
+ * ID Generator
+ * @since 2024/8/2
+ * @author mayanjun
  */
 public interface IdGenerator {
 
