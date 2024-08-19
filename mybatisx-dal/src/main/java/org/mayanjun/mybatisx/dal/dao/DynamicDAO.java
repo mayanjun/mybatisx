@@ -69,7 +69,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A default implementation of DAO
- *
  * @author mayanjun(6/24/16)
  */
 public abstract class DynamicDAO implements DataBaseRouteAccessor, ShardingEntityAccessor, InitializingBean {

@@ -16,6 +16,11 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+/**
+ * 数据隔离DAO
+ * @since 2024/8/19
+ * @author mayanjun
+ */
 public class DataIsolationDAO extends BasicDAO {
 
     private static final Logger LOG = LoggerFactory.getLogger(DataIsolationDAO.class);

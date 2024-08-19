@@ -21,7 +21,6 @@ import org.mayanjun.mybatisx.api.enums.DataType;
 
 /**
  * DataTypeJdbcTypeAdapter
- *
  * @author mayanjun(8/13/16)
  */
 public class DataTypeJdbcTypeAdapter {

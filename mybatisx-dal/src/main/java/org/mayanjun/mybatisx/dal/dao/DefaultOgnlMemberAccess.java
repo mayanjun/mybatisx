@@ -7,6 +7,11 @@ import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Member;
 import java.util.Map;
 
+/**
+ * 支持OGNL的成员访问器
+ * @since 2024/8/19
+ * @author mayanjun
+ */
 public class DefaultOgnlMemberAccess implements MemberAccess {
 
     private final boolean canControlMemberAccessible = Reflector.canControlMemberAccessible();

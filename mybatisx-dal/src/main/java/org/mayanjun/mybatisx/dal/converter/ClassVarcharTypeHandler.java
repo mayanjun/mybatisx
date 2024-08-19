@@ -10,6 +10,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Class to VARCHAR
+ * @since 2024/8/19
+ * @author mayanjun
+ */
 @MappedTypes({Class.class})
 @MappedJdbcTypes({JdbcType.VARCHAR})
 public class ClassVarcharTypeHandler extends BaseTypeHandler<Class> {
