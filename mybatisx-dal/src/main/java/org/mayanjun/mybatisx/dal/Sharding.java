@@ -26,8 +26,18 @@ import java.util.Set;
  */
 public interface Sharding {
 
+    /**
+     * Returns the database name or connect pool name
+     * @param source
+     * @return
+     */
     String getDatabaseName(Object source);
 
+    /**
+     * Returns the table name
+     * @param source
+     * @return
+     */
     String getTableName(Object source);
 
     /**

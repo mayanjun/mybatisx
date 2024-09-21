@@ -23,5 +23,9 @@ package org.mayanjun.mybatisx.dal;
  */
 public interface IdGenerator {
 
+    /**
+     * Returns the next global id
+     * @return
+     */
     Long next();
 }

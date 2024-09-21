@@ -27,6 +27,11 @@ public class Assert {
 	private Assert() {
 	}
 
+	/**
+	 *
+	 * @param exp
+	 * @param message
+	 */
 	public static void isTrue(boolean exp, String message) {
 		if (!exp) {
 			throw new IllegalArgumentException(message);
