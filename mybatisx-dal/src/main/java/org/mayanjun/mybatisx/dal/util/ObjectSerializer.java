@@ -22,7 +22,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 /**
- *
+ * JSON object serializer and deserializer
+ * @since 2024/10/7
+ * @author mayanjun
  */
 public final class ObjectSerializer {
 	private ObjectSerializer() {

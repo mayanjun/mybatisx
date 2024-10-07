@@ -35,6 +35,7 @@ import java.text.SimpleDateFormat;
 import java.util.Map;
 
 /**
+ * JSON util
  * @author mayanjun
  * @since 17/03/2017
  */
