@@ -34,6 +34,11 @@ import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ResourceLoader;
 
+/**
+ * Mybatisx auto configuration bean
+ * @since 2024/10/8
+ * @author mayanjun
+ */
 @EnableConfigurationProperties(MybatisxConfig.class)
 @ConditionalOnClass(BasicDAO.class)
 @AutoConfigureAfter({MybatisAutoConfiguration.class})
