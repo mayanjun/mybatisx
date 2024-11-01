@@ -29,31 +29,39 @@ import java.lang.reflect.Field;
  */
 public class AnnotationHolder {
 
-        Column column;
-        PrimaryKey primaryKey;
-        private Field field;
-        private String ognl;
+    Column column;
+    PrimaryKey primaryKey;
+    private Field field;
+    private String ognl;
 
-        AnnotationHolder(Column column, Field field, PrimaryKey primaryKey, String ognl) {
-            this.column = column;
-            this.field = field;
-            this.primaryKey = primaryKey;
-            this.ognl = ognl;
-        }
+    private Class<?> componentReferenceType;
 
-        public Column getColumn() {
-            return column;
-        }
-
-        public PrimaryKey getPrimaryKey() {
-            return primaryKey;
-        }
-
-        public Field getField() {
-            return field;
-        }
-
-        public String getOgnl() {
-            return ognl;
-        }
+    AnnotationHolder(Column column, Field field, PrimaryKey primaryKey, String ognl, Class<?> componentReferenceType) {
+        this.column = column;
+        this.field = field;
+        this.primaryKey = primaryKey;
+        this.ognl = ognl;
+        this.componentReferenceType = componentReferenceType;
     }
+
+    public Column getColumn() {
+        return column;
+    }
+
+    public PrimaryKey getPrimaryKey() {
+        return primaryKey;
+    }
+
+    public Field getField() {
+        return field;
+    }
+
+    public String getOgnl() {
+        return ognl;
+    }
+
+    public Class<?> getComponentReferenceType() {
+        return componentReferenceType;
+    }
+}
+

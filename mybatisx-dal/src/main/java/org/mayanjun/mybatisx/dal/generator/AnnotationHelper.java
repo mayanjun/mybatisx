@@ -190,7 +190,7 @@ public class AnnotationHelper {
     public static Map<String, AnnotationHolder> getAnnotationHoldersMap(Class<?> cls) {
         Map<String, AnnotationHolder> map = ANNOTATIONHOLDERS_CACHE.get(cls);
         if(map == null) {
-            map = getAllColumnAnnotationHoldersInternal(cls, null);
+            map = getAllColumnAnnotationHoldersInternal(cls, null, null);
             ANNOTATIONHOLDERS_CACHE.put(cls, map);
         }
         return map;
@@ -246,7 +246,7 @@ public class AnnotationHelper {
      * @param ognl Ognl name
      * @return
      */
-    private static Map<String, AnnotationHolder> getAllColumnAnnotationHoldersInternal(Class<?> cls, String ognl) {
+    private static Map<String, AnnotationHolder> getAllColumnAnnotationHoldersInternal(Class<?> cls, String ognl, Class<?> componentReferenceType) {
         Map<String, AnnotationHolder> holders = new HashMap<String, AnnotationHolder>();
         Collection<Field> fields = ClassUtils.getAllFields(cls);
 
@@ -257,7 +257,7 @@ public class AnnotationHelper {
             Column column = f.getAnnotation(Column.class);
             PrimaryKey pk = f.getAnnotation(PrimaryKey.class);
             if (column != null) {
-                AnnotationHolder ah = new AnnotationHolder(column, f, pk, ognl);
+                AnnotationHolder ah = new AnnotationHolder(column, f, pk, ognl, componentReferenceType);
                 holders.put(getOgnlName(ah), ah);
                 if (pk != null) {
                     if (meetPrimaryKey)
@@ -286,8 +286,9 @@ public class AnnotationHelper {
                 String og = ognl;
                 if (og != null) og += "." + f.getName();
                 else og = f.getName();
+
                 if (component != null) {
-                    Map<String, AnnotationHolder> comHolders = getAllColumnAnnotationHoldersInternal(f.getType(), og);
+                    Map<String, AnnotationHolder> comHolders = getAllColumnAnnotationHoldersInternal(f.getType(), og, component.referenceType());
                     if (!comHolders.isEmpty()) {
                         String excludes[] = component.excludes();
                         if (excludes != null && excludes.length > 0) {

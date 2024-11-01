@@ -39,4 +39,10 @@ public @interface ComponentColumn {
      * @return
      */
     String value();
+
+    /**
+     * 引用的是哪个类型
+     * @return
+     */
+    Class<?> referenceType();
 }
