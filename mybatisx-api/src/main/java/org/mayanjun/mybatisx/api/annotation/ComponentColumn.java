@@ -44,5 +44,5 @@ public @interface ComponentColumn {
      * 引用的是哪个类型
      * @return
      */
-    Class<?> referenceType();
+    Class<?> referenceType() default Object.class;
 }
