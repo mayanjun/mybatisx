@@ -91,6 +91,11 @@ public class ThreadLocalDatabaseRouter implements DatabaseRouter, InitializingBe
     }
 
     @Override
+    public boolean databaseSessionExists(String name) {
+        return databaseSessionMap.containsKey(name);
+    }
+
+    @Override
     public DatabaseSession getDatabaseSession(Sharding sharding, Object source) {
         if (sharding != null) {
             return getDatabaseSession(sharding.getDatabaseName(source));

@@ -106,11 +106,11 @@ public class DDL {
 		return GENERATOR.generate(clazz, tableName, genDrop);
 	}
 
-	public static void ddl(File outFile, boolean includeJar, String... packageName) throws Exception {
-		ddl(outFile, includeJar, true, packageName);
+	public static void ddl(File outFile, boolean includeJar, List<Class<?>> excludeClasses, String... packageName) throws Exception {
+		ddl(outFile, includeJar, true, excludeClasses, packageName);
 	}
 
-	public static List<String> ddl(boolean includeJar, boolean genDrop, String... packageName) {
+	public static List<String> ddl(boolean includeJar, boolean genDrop, List<Class<?>> excludeClasses, String... packageName) {
 		List<String> list = new ArrayList<String>();
 		try {
 			List<Resource> resources = parseResources(packageName);
@@ -125,8 +125,11 @@ public class DDL {
 				if (matched) {
 					String className = reader.getClassMetadata().getClassName();
 					Class<?> cls = Class.forName(className);
-					LOG.info("Generating: " + className);
-					list.add(GENERATOR.generate(cls, null, genDrop));
+
+					if (excludeClasses == null || !excludeClasses.contains(cls)) {
+						LOG.info("Generating: " + className);
+						list.add(GENERATOR.generate(cls, null, genDrop));
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -135,11 +138,11 @@ public class DDL {
 		return list;
 	}
 
-	public static void ddl(File outFile, boolean includeJar, boolean genDrop, String... packageName) throws Exception {
+	public static void ddl(File outFile, boolean includeJar, boolean genDrop, List<Class<?>> excludeClasses, String... packageName) throws Exception {
 		FileWriter writer = null;
 		try {
 			writer = new FileWriter(outFile);
-			List<String> list = ddl(includeJar, genDrop, packageName);
+			List<String> list = ddl(includeJar, genDrop, excludeClasses, packageName);
 			for (String s : list) writer.write(s);
 			writer.flush();
 			LOG.info("DDL write success!");

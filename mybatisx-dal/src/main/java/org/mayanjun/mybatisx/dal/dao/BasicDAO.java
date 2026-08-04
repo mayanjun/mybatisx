@@ -16,6 +16,10 @@
 
 package org.mayanjun.mybatisx.dal.dao;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.mayanjun.mybatisx.api.entity.LongEntity;
+import org.mayanjun.mybatisx.api.query.QueryBuilder;
+import org.mayanjun.mybatisx.api.query.SortDirection;
 import org.mayanjun.mybatisx.dal.Sharding;
 import org.mayanjun.mybatisx.dal.sharding.DefaultShardingProvider;
 import org.mayanjun.mybatisx.dal.sharding.StaticSharding;
@@ -24,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * BasicDAO

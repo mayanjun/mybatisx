@@ -48,6 +48,9 @@ public interface DatabaseRouter {
      */
     DatabaseSession getDatabaseSession(String name);
 
+
+    boolean databaseSessionExists(String name);
+
     /**
      * 通过Sharding对象获取session
      * @param sharding sharding
